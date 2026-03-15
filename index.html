@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutoriais de Instalação em VMs</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #f5f5f0; color: #1a1a1a; line-height: 1.6; }
+
+header { background: #1a1a1a; color: #fff; padding: 48px 40px; text-align: center; }
+header h1 { font-size: 30px; font-weight: 700; letter-spacing: -1px; margin-bottom: 8px; }
+header p  { color: #888; font-size: 14px; }
+
+nav { display: flex; justify-content: center; gap: 10px; padding: 28px 20px; flex-wrap: wrap; }
+nav a { text-decoration: none; padding: 8px 20px; border-radius: 99px; font-size: 13px; font-weight: 600; border: 1.5px solid #ddd; background: #fff; color: #444; transition: all 0.15s; }
+nav a:hover { border-color: #1a1a1a; color: #1a1a1a; }
+
+main { max-width: 760px; margin: 0 auto; padding: 0 24px 80px; }
+
+.section { margin-bottom: 72px; scroll-margin-top: 24px; }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #999; margin-bottom: 6px; }
+.section-title { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 10px; }
+.section-desc { font-size: 14px; color: #555; margin-bottom: 32px; max-width: 600px; }
+
+.step { margin-bottom: 28px; }
+.step-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+.step-num { width: 24px; height: 24px; border-radius: 50%; background: #1a1a1a; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-desc { font-size: 13px; color: #555; margin-bottom: 10px; margin-left: 34px; line-height: 1.7; }
+
+.code { background: #1a1a1a; border-radius: 8px; overflow: hidden; margin: 10px 0 10px 34px; }
+.code-bar { background: #252525; padding: 7px 14px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: #555; font-family: 'JetBrains Mono', monospace; }
+.copy-btn { background: transparent; border: 1px solid #3a3a3a; border-radius: 4px; color: #666; font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; cursor: pointer; transition: all 0.15s; }
+.copy-btn:hover { border-color: #888; color: #bbb; }
+.code pre { padding: 14px 16px; font-size: 12px; line-height: 1.9; color: #e0e0e0; overflow-x: auto; white-space: pre; font-family: 'JetBrains Mono', monospace; }
+.code pre .c { color: #4a4a5a; }
+.code pre .g { color: #4ec994; }
+.code pre .r { color: #e06c75; }
+.code pre .b { color: #61afef; }
+.code pre .y { color: #e5c07b; }
+.code pre .p { color: #c678dd; }
+
+.alert { margin: 10px 0 10px 34px; padding: 11px 14px; border-radius: 6px; font-size: 13px; line-height: 1.6; }
+.alert-warn { background: #fffbe6; border-left: 3px solid #f5a623; color: #7a5c00; }
+.alert-info { background: #eef5ff; border-left: 3px solid #4a9eff; color: #1a4a80; }
+.alert-ok   { background: #efffee; border-left: 3px solid #2ea84a; color: #1a5e2a; }
+.alert strong { font-weight: 600; }
+
+.path-ui { margin: 10px 0 10px 34px; background: #fff; border: 1px solid #e0e0d8; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #444; display: flex; align-items: center; gap: 6px; }
+.path-ui span { color: #1a1a1a; font-weight: 600; }
+.path-ui .sep { color: #bbb; }
+
+hr { border: none; border-top: 1px solid #e0e0d8; margin: 64px 0; }
+footer { text-align: center; padding: 32px; font-size: 12px; color: #aaa; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Tutoriais de Instalação em VMs</h1>
+  <p>Prometheus + Grafana &nbsp;·&nbsp; Integração com Proxmox</p>
+</header>
+
+<nav>
+  <a href="#prometheus">Prometheus + Grafana</a>
+  <a href="#proxmox">Integração Proxmox</a>
+</nav>
+
+<main>
+
+  <!-- ═══════════════════════════════════
+       PROMETHEUS + GRAFANA
+  ════════════════════════════════════ -->
+  <section class="section" id="prometheus">
+    <div class="section-label">Monitoramento</div>
+    <h2 class="section-title">Prometheus + Grafana</h2>
+    <p class="section-desc">
+      Instale a stack de monitoramento completa usando Docker numa VM Ubuntu/Debian.
+      O Prometheus coleta métricas e o Grafana exibe os dashboards.
+    </p>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">1</div> Instalar Docker e Docker Compose</div>
+      <p class="step-desc">Instale o Docker e o plugin Compose via apt.</p>
+      <div class="code">
+        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+        <pre><span class="g">sudo apt install</span> -y docker.io docker-compose-v2</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">2</div> Habilitar Docker e adicionar usuário ao grupo</div>
+      <p class="step-desc">Inicie o Docker automaticamente no boot e permita rodar sem sudo.</p>
+      <div class="code">
+        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+        <pre><span class="g">sudo systemctl enable</span> --now docker
+<span class="g">sudo usermod</span> -aG docker <span class="r">$USER</span>
+<span class="g">newgrp</span> docker</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">3</div> Criar estrutura de pastas</div>
+      <div class="code">
+        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+        <pre><span class="g">mkdir</span> -p ~/monitoramento/{prometheus,grafana}
+<span class="g">cd</span> ~/monitoramento</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">4</div> Criar o prometheus.yml</div>
+      <div class="code">
+        <div class="code-bar"><span>prometheus/prometheus.yml</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+        <pre><span class="p">global</span>:
+  scrape_interval: <span class="r">15s</span>
+
+<span class="p">scrape_configs</span>:
+  - job_name: <span class="r">'prometheus'</span>
+    static_configs:
+      - targets: [<span class="r">'localhost:9090'</span>]</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">5</div> Criar o docker-compose.yml</div>
+      <div class="code">
+        <div class="code-bar"><span>docker-compose.yml</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+        <pre><span class="p">version</span>: <span class="r">"3.8"</span>
+
+<span class="p">services</span>:
+  <span class="g">prometheus</span>:
+    image: <span class="r">prom/prometheus:latest</span>
+    container_name: prometheus
+    volumes:
+      - <span class="b">./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro</span>
+    ports:
+      - <span class="r">"9090:9090"</span>
+    restart: unless-stopped
+
+  <span class="g">grafana</span>:
+    image: <span class="r">grafana/grafana:latest</span>
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=<span class="r">admin</span>
+    volumes:
+      - <span class="b">grafana_data:/var/lib/grafana</span>
+    ports:
+      - <span class="r">"3000:3000"</span>
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+<span class="p">volumes</span>:
+  grafana_data:</pre>
+      </div>
+      <div class="alert alert-warn"><strong>Atenção:</strong> Troque a senha <code>admin</code> por algo mais seguro antes de usar em produção.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">6</div> Subir os containers</div>
+      <div class="code">
+        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+        <pre><span class="g">docker compose up</span> -d</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">7</div> Abrir firewall (se necessário)</div>
+      <p class="step-desc">Se a VM tiver UFW ativo, libere as portas do Grafana e do Prometheus.</p>
+      <div class="code">
+        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+        <pre><span class="g">sudo ufw allow</span> 3000/tcp
+<span class="g">sudo ufw allow</span> 9090/tcp</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">8</div> Configurar datasource no Grafana</div>
+      <p class="step-desc">
+        Acesse <strong>http://&lt;IP_DA_VM&gt;:3000</strong> no navegador (login: <code>admin / admin</code>).
+        Navegue até <strong>Connections → Data sources → Add new data source → Prometheus</strong>.
+        Preencha a URL e salve.
+      </p>
+      <div class="path-ui">
+        <span>Connections</span><span class="sep">→</span><span>Data sources</span><span class="sep">→</span><span>Add new</span><span class="sep">→</span><span>Prometheus</span>
+      </div>
+      <div class="code">
+        <div class="code-bar"><span>campo URL</span></div>
+        <pre>http://prometheus:9090</pre>
+      </div>
+      <p class="step-desc" style="margin-top:10px;">Clique em <strong>Save &amp; test</strong>. A mensagem de sucesso deve aparecer:</p>
+      <div class="alert alert-ok"><strong>Successfully queried the Prometheus API.</strong> Next, you can start to visualize data by building a dashboard, or by querying data in the Explore view.</div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ═══════════════════════════════════
+       INTEGRAÇÃO PROXMOX
+  ════════════════════════════════════ -->
+  <section class="section" id="proxmox">
+    <div class="section-label">Integração</div>
+    <h2 class="section-title">Monitorar o Proxmox com Prometheus</h2>
+    <p class="section-desc">
+      Crie um usuário dedicado no Proxmox com permissão de leitura, gere um API Token,
+      suba o <code>pve-exporter</code> via Docker e adicione os jobs no Prometheus.
+    </p>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">1</div> Criar usuário no Proxmox</div>
+      <p class="step-desc">No painel do Proxmox, navegue até:</p>
+      <div class="path-ui">
+        <span>Datacenter</span><span class="sep">→</span><span>Permissions</span><span class="sep">→</span><span>Users</span><span class="sep">→</span><span>Add</span>
+      </div>
+      <p class="step-desc" style="margin-top:10px;">Preencha o formulário com os seguintes dados:</p>
+      <div class="code">
+        <div class="code-bar"><span>Add: User</span></div>
+        <pre>User name : <span class="g">prometheus</span>
+Realm     : <span class="r">Proxmox VE authentication</span>
+Password  : <span class="c">(deixar em branco — acesso via token)</span>
+Enabled   : <span class="g">✓</span></pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">2</div> Dar permissões mínimas (PVEAuditor)</div>
+      <p class="step-desc">Ainda em Permissions, adicione uma permissão de usuário:</p>
+      <div class="path-ui">
+        <span>Datacenter</span><span class="sep">→</span><span>Permissions</span><span class="sep">→</span><span>Add</span><span class="sep">→</span><span>User Permission</span>
+      </div>
+      <div class="code">
+        <div class="code-bar"><span>Add: User Permission</span></div>
+        <pre>Path      : <span class="g">/</span>
+User      : <span class="r">prometheus@pve</span>
+Role      : <span class="y">PVEAuditor</span>
+Propagate : <span class="g">✓</span></pre>
+      </div>
+      <div class="alert alert-info"><strong>PVEAuditor</strong> é o role com as permissões mínimas necessárias — apenas leitura. Não dê roles com mais permissões do que o necessário.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">3</div> Criar API Token</div>
+      <div class="path-ui">
+        <span>Datacenter</span><span class="sep">→</span><span>Permissions</span><span class="sep">→</span><span>API Tokens</span><span class="sep">→</span><span>Add</span>
+      </div>
+      <div class="code">
+        <div class="code-bar"><span>Add: Token</span></div>
+        <pre>User                : <span class="r">prometheus@pve</span>
+Token ID            : <span class="g">monitoring</span>
+Privilege Separation: <span class="r">☐ (desmarcado)</span>
+Expire              : never</pre>
+      </div>
+      <p class="step-desc" style="margin-top:10px;">Após criar, o Proxmox exibe o secret <strong>uma única vez</strong>. Guarde-o:</p>
+      <div class="code">
+        <div class="code-bar"><span>Token Secret — copie agora</span></div>
+        <pre>Token ID : <span class="y">prometheus@pve!monitoring</span>
+Secret   : <span class="r">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></pre>
+      </div>
+      <div class="alert alert-warn"><strong>Atenção:</strong> O secret não pode ser recuperado depois. Se perder, será necessário deletar e criar um novo token.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">4</div> Criar o arquivo pve/pve.yml</div>
+      <p class="step-desc">Crie a pasta e o arquivo de credenciais para o pve-exporter.</p>
+      <div class="code">
+        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+        <pre><span class="g">mkdir</span> -p ~/monitoramento/pve
+<span class="g">nano</span> ~/monitoramento/pve/pve.yml</pre>
+      </div>
+      <div class="code">
+        <div class="code-bar"><span>pve/pve.yml</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+        <pre><span class="p">default</span>:
+  user: <span class="r">prometheus@pam</span>
+  token_name: <span class="r">"exporter"</span>
+  token_value: <span class="r">"SEU_TOKEN_SECRET_AQUI"</span>
+  verify_ssl: false</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">5</div> Atualizar o docker-compose.yml</div>
+      <p class="step-desc">Adicione o <code>node_exporter</code> (métricas da VM) e o <code>proxmox_exporter</code> (métricas do Proxmox).</p>
+      <div class="code">
+        <div class="code-bar"><span>docker-compose.yml — versão completa</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+        <pre><span class="p">version</span>: <span class="r">"3.8"</span>
+
+<span class="p">services</span>:
+  <span class="g">prometheus</span>:
+    image: <span class="r">prom/prometheus:latest</span>
+    container_name: prometheus
+    volumes:
+      - <span class="b">./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro</span>
+    ports:
+      - <span class="r">"9090:9090"</span>
+    restart: unless-stopped
+
+  <span class="g">grafana</span>:
+    image: <span class="r">grafana/grafana:latest</span>
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=<span class="r">admin</span>
+    volumes:
+      - <span class="b">grafana_data:/var/lib/grafana</span>
+    ports:
+      - <span class="r">"3000:3000"</span>
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+  <span class="g">node_exporter</span>:
+    image: <span class="r">quay.io/prometheus/node-exporter:latest</span>
+    container_name: node_exporter
+    network_mode: host
+    pid: host
+    restart: unless-stopped
+
+  <span class="g">proxmox_exporter</span>:
+    image: <span class="r">prompve/prometheus-pve-exporter:latest</span>
+    container_name: proxmox_exporter
+    ports:
+      - <span class="r">"9221:9221"</span>
+    restart: unless-stopped
+    volumes:
+      - <span class="b">./pve/pve.yml:/etc/prometheus/pve.yml</span>
+
+<span class="p">volumes</span>:
+  grafana_data:
+  prometheus-data:</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">6</div> Atualizar o prometheus.yml com todos os jobs</div>
+      <div class="code">
+        <div class="code-bar"><span>prometheus/prometheus.yml — versão completa</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+        <pre><span class="p">global</span>:
+  scrape_interval: <span class="r">1m</span>
+
+<span class="p">scrape_configs</span>:
+  <span class="c"># Prometheus em si</span>
+  - job_name: <span class="r">'prometheus'</span>
+    static_configs:
+      - targets: [<span class="r">'localhost:9090'</span>]
+
+  <span class="c"># Métricas da VM (node exporter)</span>
+  - job_name: <span class="r">'node'</span>
+    static_configs:
+      - targets: [<span class="r">'10.1.12.225:9100'</span>]  <span class="c"># IP da VM</span>
+
+  <span class="c"># Métricas do Proxmox via pve-exporter</span>
+  - job_name: <span class="r">'pve'</span>
+    static_configs:
+      - targets:
+          - <span class="r">10.1.12.225</span>  <span class="c"># IP do nó Proxmox</span>
+    metrics_path: <span class="b">/pve</span>
+    params:
+      module: [default]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: <span class="r">proxmox_exporter:9221</span></pre>
+      </div>
+      <div class="alert alert-info"><strong>Lembre-se:</strong> Troque <code>10.1.12.225</code> pelo IP real do seu nó Proxmox.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">7</div> Subir os novos containers e reiniciar o Prometheus</div>
+      <div class="code">
+        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+        <pre><span class="g">docker compose up</span> -d
+<span class="g">docker compose restart</span> prometheus</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">8</div> Verificar targets no Prometheus</div>
+      <p class="step-desc">
+        Acesse <strong>http://&lt;IP_DA_VM&gt;:9090/targets</strong> e confirme que todos os jobs
+        estão com status <strong>UP</strong>.
+      </p>
+      <div class="code">
+        <div class="code-bar"><span>Status → Target health — resultado esperado</span></div>
+        <pre>prometheus  →  http://prometheus:9090/metrics   <span class="g">UP</span>
+proxmox     →  http://pve-exporter:9221/metrics  <span class="g">UP</span></pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title"><div class="step-num">9</div> Importar dashboard no Grafana</div>
+      <p class="step-desc">
+        No Grafana, navegue até <strong>Dashboards → New → Import</strong>.
+        Digite o ID <strong>10347</strong> e clique em <strong>Load</strong>.
+      </p>
+      <div class="path-ui">
+        <span>Dashboards</span><span class="sep">→</span><span>New</span><span class="sep">→</span><span>Import</span>
+      </div>
+      <div class="code">
+        <div class="code-bar"><span>Dashboard ID (grafana.com)</span></div>
+        <pre>10347  <span class="c">— "Proxmox via Prometheus" por Pietro Saccardi</span></pre>
+      </div>
+      <p class="step-desc" style="margin-top:10px;">
+        Na tela de importação, selecione o datasource <strong>prometheus</strong> no campo
+        <em>DS_PROMETHEUS</em> e clique em <strong>Import</strong>.
+      </p>
+      <div class="alert alert-ok">
+        <strong>Pronto!</strong> O dashboard exibe em tempo real CPU, memória, disco e o status de todas as VMs rodando no Proxmox.
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Testado em Ubuntu 22.04 LTS · Docker 24+ · Proxmox VE 8
+</footer>
+
+<script>
+function copyCode(btn) {
+  const pre = btn.closest('.code').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    btn.textContent = '✓ copiado';
+    setTimeout(() => btn.textContent = 'copiar', 2000);
+  });
+}
+</script>
+</body>
+</html>
