@@ -153,7 +153,7 @@ footer { text-align: center; padding: 32px; font-size: 12px; color: #aaa; }
     restart: unless-stopped
 
 <span class="p">volumes</span>:
-  grafana_data:</pre>
+  grafana_data: {}</pre>
       </div>
       <div class="alert alert-warn"><strong>Atenção:</strong> Troque a senha <code>admin</code> por algo mais seguro antes de usar em produção.</div>
     </div>
@@ -188,10 +188,10 @@ footer { text-align: center; padding: 32px; font-size: 12px; color: #aaa; }
       </div>
       <div class="code">
         <div class="code-bar"><span>campo URL</span></div>
-        <pre>http://prometheus:9090</pre>
+        <pre>http://<ip-prometheus>:9090</pre>
       </div>
       <p class="step-desc" style="margin-top:10px;">Clique em <strong>Save &amp; test</strong>. A mensagem de sucesso deve aparecer:</p>
-      <div class="alert alert-ok"><strong>Successfully queried the Prometheus API.</strong> Next, you can start to visualize data by building a dashboard, or by querying data in the Explore view.</div>
+      <div class="alert alert-ok"><strong>Consulta à API do Prometheus realizada com sucesso.</strong> Em seguida, você pode começar a visualizar os dados criando um dashboard ou consultando os dados na visualização Explore.</div>
     </div>
   </section>
 
@@ -326,8 +326,8 @@ Secret   : <span class="r">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></pre>
       - <span class="b">./pve/pve.yml:/etc/prometheus/pve.yml</span>
 
 <span class="p">volumes</span>:
-  grafana_data:
-  prometheus-data:</pre>
+  grafana_data: {}
+  prometheus-data: {}</pre>
       </div>
     </div>
 
@@ -347,13 +347,13 @@ Secret   : <span class="r">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></pre>
   <span class="c"># Métricas da VM (node exporter)</span>
   - job_name: <span class="r">'node'</span>
     static_configs:
-      - targets: [<span class="r">'10.1.12.225:9100'</span>]  <span class="c"># IP da VM</span>
+      - targets: [<span class="r">'IP_DO_PROXMOX5:9100'</span>]  <span class="c"># IP da VM</span>
 
   <span class="c"># Métricas do Proxmox via pve-exporter</span>
   - job_name: <span class="r">'pve'</span>
     static_configs:
       - targets:
-          - <span class="r">10.1.12.225</span>  <span class="c"># IP do nó Proxmox</span>
+          - <span class="r">IP_DO_PROXMOX</span>  <span class="c"># IP do nó Proxmox</span>
     metrics_path: <span class="b">/pve</span>
     params:
       module: [default]
@@ -365,7 +365,7 @@ Secret   : <span class="r">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></pre>
       - target_label: __address__
         replacement: <span class="r">proxmox_exporter:9221</span></pre>
       </div>
-      <div class="alert alert-info"><strong>Lembre-se:</strong> Troque <code>10.1.12.225</code> pelo IP real do seu nó Proxmox.</div>
+      <div class="alert alert-info"><strong>Lembre-se:</strong> Troque <code>IP_DO_PROXMOX</code> pelo IP real do seu nó Proxmox.</div>
     </div>
 
     <div class="step">
