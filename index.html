@@ -347,7 +347,7 @@ Secret   : <span class="r">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></pre>
   <span class="c"># Métricas da VM (node exporter)</span>
   - job_name: <span class="r">'node'</span>
     static_configs:
-      - targets: [<span class="r">'IP_DO_PROXMOX5:9100'</span>]  <span class="c"># IP da VM</span>
+      - targets: [<span class="r">'IP_DO_PROXMOX:9100'</span>]  <span class="c"># IP da VM</span>
 
   <span class="c"># Métricas do Proxmox via pve-exporter</span>
   - job_name: <span class="r">'pve'</span>
@@ -365,7 +365,7 @@ Secret   : <span class="r">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></pre>
       - target_label: __address__
         replacement: <span class="r">proxmox_exporter:9221</span></pre>
       </div>
-      <div class="alert alert-info"><strong>Lembre-se:</strong> Troque <code>IP_DO_PROXMOX</code> pelo IP real do seu nó Proxmox.</div>
+      <div class="alert alert-info"><strong>Lembre-se:</strong> Troque <code>IP_DO_PROXMOX</code> pelo IP real do seu Proxmox.</div>
     </div>
 
     <div class="step">
