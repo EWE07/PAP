@@ -775,9 +775,9 @@ const services = [
   {
     id:'pbs', name:'PBS + Tailscale', icon:'💾', color:'#7c3aed',
     desc:'Backups automáticos diários para servidor na escola via VPN Tailscale. Redundância geográfica.',
-    tags:['backup','VPN mesh','offsite','diário'],
-    how:'PBS instalado no PVE da escola (10.1.12.143). Tailscale nos 4 nós. Backup job diário de todas as VMs.',
-    config:['PBS IP (Tailscale): 10.1.12.143','Tailscale: 100.x.x.x (mesh VPN)','Backups: vm100–vm108','Schedule: diário automático','Redundância geográfica: escola'],
+    tags:['backup','VPN mesh'],
+    how:'PBS instalado no PVE da escola. Tailscale nos 4 nós. Backup diário de todas as VMs.',
+    config:['Tailscale: 100.x.x.x (mesh VPN)','Backups: vm100–vm108','Schedule: diário automático','Redundância geográfica: escola'],
     code:`<span class="code-comment"># Máquinas no Tailscale</span>\n<span class="code-key">pve</span>  <span class="code-val">100.73.66.45</span>\n<span class="code-key">pve1</span> <span class="code-val">100.88.186.23</span>\n<span class="code-key">pve2</span> <span class="code-val">100.126.19.4</span>\n<span class="code-key">pve3</span> <span class="code-val">100.122.249.113</span>`,
   },
 ];
