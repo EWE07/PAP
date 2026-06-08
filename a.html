@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <title>Adeus!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 5rem;
+            margin: 100px 0;
+        }
+
+        .scroll-container {
+            width: 80%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            padding-bottom: 200px;
+        }
+
+        .photo-box {
+            width: 100%;
+            height: 300px;
+            background: #333;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+            color: #777;
+            border: 2px dashed #555;
+        }
+
+        /* Classe que será ativada pelo JS */
+        .photo-box.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Adeus!</h1>
+
+    <div class="scroll-container">
+        <!-- Substitua a div abaixo por <img src="URL_DA_SUA_FOTO"> -->
+        <div class="photo-box">Foto 1</div>
+        <div class="photo-box">Foto 2</div>
+        <div class="photo-box">Foto 3</div>
+        <div class="photo-box">Foto 4</div>
+        <div class="photo-box">Foto 5</div>
+        <div class="photo-box">Foto 6</div>
+    </div>
+
+    <script>
+        // Função para detectar scroll e ativar animação
+        function reveal() {
+            var reveals = document.querySelectorAll(".photo-box");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("visible");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+    </script>
+</body>
+</html>
