@@ -7,19 +7,19 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #dfdfdf;
-    --bg2: #dededf;
-    --panel: #ccc9c9;
-    --panel2: #c5c5c5;
-    --border: #dde1ea;
-    --accent: #1a6ef5;
+    --bg: #0a0d14;
+    --bg2: #0f1320;
+    --panel: #131826;
+    --panel2: #1a2035;
+    --border: #1e2840;
+    --accent: #00c4ff;
     --accent2: #7c3aed;
-    --green: #0a8a4e;
-    --orange: #c95f00;
-    --red: #d62b3f;
-    --yellow: #b07500;
-    --text: #111827;
-    --muted: #6b7280;
+    --green: #00e676;
+    --orange: #ff9100;
+    --red: #ff3d57;
+    --yellow: #ffd740;
+    --text: #e2e8f0;
+    --muted: #64748b;
     --mono: 'JetBrains Mono', monospace;
     --sans: 'Syne', sans-serif;
   }
@@ -37,7 +37,7 @@
   /* NAV */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(248,249,251,0.92);
+    background: rgba(10,13,20,0.85);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
     padding: 0 2rem;
@@ -65,13 +65,13 @@
   }
   h2 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 2rem; }
   h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: .5rem; }
-  p { line-height: 1.7; color: var(--muted); font-family: var(--mono); font-size: 0.85rem; }
+  p { line-height: 1.7; color: #94a3b8; font-family: var(--mono); font-size: 0.85rem; }
 
   .tag {
     font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
     letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--accent); border: 1px solid rgba(26,110,245,0.25);
-    background: rgba(26,110,245,0.06);
+    color: var(--accent); border: 1px solid rgba(0,196,255,0.3);
+    
     padding: .25rem .7rem; border-radius: 2px;
     display: inline-block; margin-bottom: 1rem;
   }
@@ -86,7 +86,7 @@
     content: '';
     position: absolute; top: -200px; right: -200px;
     width: 600px; height: 600px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(26,110,245,0.05) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0,196,255,0.07) 0%, transparent 70%);
     pointer-events: none;
   }
   #hero::after {
@@ -156,7 +156,7 @@
   .card-tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .8rem; }
   .card-tag {
     font-family: var(--mono); font-size: 0.6rem; padding: .15rem .5rem;
-    background: var(--bg2); border: 1px solid var(--border);
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
     border-radius: 2px; color: var(--muted);
   }
 
@@ -174,21 +174,21 @@
   }
   .detail-item {
     display: flex; align-items: flex-start; gap: .7rem;
-    margin-bottom: .6rem; font-size: .8rem; font-family: var(--mono); color: var(--text);
+    margin-bottom: .6rem; font-size: .8rem; font-family: var(--mono);
   }
   .detail-bullet {
     width: 4px; height: 4px; border-radius: 50%;
     background: var(--accent); margin-top: .45rem; flex-shrink: 0;
   }
   .code-block {
-    background: #1e2235; border: 1px solid #2e3550;
+    background: var(--bg); border: 1px solid var(--border);
     padding: 1rem; font-family: var(--mono); font-size: 0.72rem;
-    color: #a8d8a8; border-radius: 4px; overflow-x: auto;
+    color: var(--green); border-radius: 4px; overflow-x: auto;
     line-height: 1.8; margin-top: .8rem;
   }
-  .code-comment { color: #6b7a99; }
-  .code-key { color: #7ec8e3; }
-  .code-val { color: #f0c060; }
+  .code-comment { color: var(--muted); }
+  .code-key { color: var(--accent); }
+  .code-val { color: var(--yellow); }
 
   /* NETWORK SECTION */
   .vlan-table {
@@ -220,7 +220,7 @@
   .node-status {
     width: 8px; height: 8px; border-radius: 50%;
     margin: 0 auto .8rem; background: var(--green);
-    box-shadow: 0 0 8px rgba(10,138,78,0.4);
+    box-shadow: 0 0 8px var(--green);
   }
   .node-name { font-size: .85rem; font-weight: 700; }
   .node-ip { font-family: var(--mono); font-size: .65rem; color: var(--muted); margin-top: .3rem; }
@@ -245,17 +245,17 @@
     padding: .6rem 1.2rem; cursor: pointer; letter-spacing: .08em;
     transition: all .2s; margin-top: 1rem; display: block;
   }
-  .failover-btn:hover { background: rgba(214,43,63,0.07); }
+  .failover-btn:hover { background: rgba(255,61,87,0.1); }
   .reset-btn {
     background: none; border: 1px solid var(--green); color: var(--green);
     font-family: var(--mono); font-size: 0.75rem;
     padding: .6rem 1.2rem; cursor: pointer; letter-spacing: .08em;
     transition: all .2s; margin-top: .5rem; display: none;
   }
-  .reset-btn:hover { background: rgba(10,138,78,0.07); }
+  .reset-btn:hover { background: rgba(0,230,118,0.1); }
   .failover-log {
     font-family: var(--mono); font-size: 0.72rem;
-    background: #1e2235; border: 1px solid #2e3550;
+    background: var(--bg); border: 1px solid var(--border);
     color: #a8d8a8; padding: 1rem; margin-top: 1rem;
     height: 130px; overflow-y: auto; display: none; border-radius: 4px;
   }
@@ -266,7 +266,7 @@
   .timeline-item::before {
     content: ''; position: absolute; left: -2.45rem; top: .35rem;
     width: 8px; height: 8px; border-radius: 50%;
-    background: var(--accent); box-shadow: 0 0 0 3px rgba(26,110,245,0.15);
+    background: var(--accent); box-shadow: 0 0 8px var(--accent);
   }
   .timeline-title { font-weight: 700; font-size: .9rem; }
   .timeline-body { font-family: var(--mono); font-size: .75rem; color: var(--muted); margin-top: .4rem; line-height: 1.7; }
@@ -360,100 +360,100 @@
     <svg viewBox="0 0 860 520" width="860" style="max-width:100%;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#dde1ea"/>
+          <path d="M0,0 L0,6 L8,3 z" fill="#1e2840"/>
         </marker>
         <marker id="arr-b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#1a6ef5"/>
+          <path d="M0,0 L0,6 L8,3 z" fill="#00c4ff"/>
         </marker>
       </defs>
 
       <!-- INTERNET -->
-      <rect x="340" y="10" width="180" height="44" rx="4" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1.5"/>
-      <text x="430" y="28" font-family="JetBrains Mono" font-size="9" fill="#6b7280" text-anchor="middle" letter-spacing="2">INTERNET</text>
-      <text x="430" y="44" font-family="JetBrains Mono" font-size="8" fill="#1a6ef5" text-anchor="middle">WAN</text>
+      <rect x="340" y="10" width="180" height="44" rx="4" fill="#0f1320" stroke="#1e2840" stroke-width="1.5"/>
+      <text x="430" y="28" font-family="JetBrains Mono" font-size="9" fill="#64748b" text-anchor="middle" letter-spacing="2">INTERNET</text>
+      <text x="430" y="44" font-family="JetBrains Mono" font-size="8" fill="#00c4ff" text-anchor="middle">WAN</text>
 
-      <line x1="340" y1="32" x2="160" y2="100" stroke="#dde1ea" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <line x1="520" y1="32" x2="700" y2="100" stroke="#dde1ea" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="340" y1="32" x2="160" y2="100" stroke="#1e2840" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="520" y1="32" x2="700" y2="100" stroke="#1e2840" stroke-width="1.5" stroke-dasharray="4,3"/>
 
       <!-- ESCOLA -->
-      <rect x="30" y="90" width="260" height="350" rx="4" fill="none" stroke="#dde1ea" stroke-width="1.5" stroke-dasharray="6,3"/>
-      <text x="160" y="110" font-family="Syne" font-size="10" fill="#6b7280" text-anchor="middle" font-weight="600" letter-spacing="3">ESCOLA</text>
+      <rect x="30" y="90" width="260" height="350" rx="4" fill="none" stroke="#1e2840" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="160" y="110" font-family="Syne" font-size="10" fill="#64748b" text-anchor="middle" font-weight="600" letter-spacing="3">ESCOLA</text>
 
-      <rect x="70" y="130" width="180" height="60" rx="4" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/>
+      <rect x="70" y="130" width="180" height="60" rx="4" fill="#131826" stroke="#7c3aed" stroke-width="1.5"/>
       <text x="160" y="154" font-family="JetBrains Mono" font-size="9" fill="#7c3aed" text-anchor="middle" font-weight="700">Proxmox VE</text>
-      <text x="160" y="168" font-family="JetBrains Mono" font-size="8" fill="#6b7280" text-anchor="middle">10.1.12.222</text>
-      <text x="160" y="182" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Backup Server</text>
+      <text x="160" y="168" font-family="JetBrains Mono" font-size="8" fill="#64748b" text-anchor="middle">10.1.12.222</text>
+      <text x="160" y="182" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">Backup Server</text>
 
-      <rect x="80" y="220" width="160" height="50" rx="4" fill="#f9f8ff" stroke="#7c3aed" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="80" y="220" width="160" height="50" rx="4" fill="#0f1320" stroke="#7c3aed" stroke-width="1" stroke-dasharray="3,2"/>
       <text x="160" y="240" font-family="JetBrains Mono" font-size="8" fill="#7c3aed" text-anchor="middle">PBS VM</text>
-      <text x="160" y="254" font-family="JetBrains Mono" font-size="7" fill="#6b7280" text-anchor="middle">10.1.12.143</text>
-      <text x="160" y="264" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Backup Repository</text>
+      <text x="160" y="254" font-family="JetBrains Mono" font-size="7" fill="#64748b" text-anchor="middle">10.1.12.143</text>
+      <text x="160" y="264" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">Backup Repository</text>
       <line x1="160" y1="190" x2="160" y2="220" stroke="#7c3aed" stroke-width="1" stroke-dasharray="3,2"/>
 
-      <rect x="95" y="295" width="130" height="28" rx="4" fill="rgba(26,110,245,0.05)" stroke="rgba(26,110,245,0.2)" stroke-width="1"/>
-      <text x="160" y="306" font-family="JetBrains Mono" font-size="7" fill="#1a6ef5" text-anchor="middle">🔐 Tailscale VPN</text>
-      <text x="160" y="316" font-family="JetBrains Mono" font-size="7" fill="#6b7280" text-anchor="middle">100.x.x.x</text>
+      <rect x="95" y="295" width="130" height="28" rx="4" fill="rgba(0,196,255,0.05)" stroke="rgba(0,196,255,0.2)" stroke-width="1"/>
+      <text x="160" y="306" font-family="JetBrains Mono" font-size="7" fill="#00c4ff" text-anchor="middle">🔐 Tailscale VPN</text>
+      <text x="160" y="316" font-family="JetBrains Mono" font-size="7" fill="#64748b" text-anchor="middle">100.x.x.x</text>
 
       <!-- ESTÁGIO -->
-      <rect x="560" y="90" width="280" height="380" rx="4" fill="none" stroke="#dde1ea" stroke-width="1.5" stroke-dasharray="6,3"/>
-      <text x="700" y="110" font-family="Syne" font-size="10" fill="#6b7280" text-anchor="middle" font-weight="600" letter-spacing="3">ESTÁGIO</text>
+      <rect x="560" y="90" width="280" height="380" rx="4" fill="none" stroke="#1e2840" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="700" y="110" font-family="Syne" font-size="10" fill="#64748b" text-anchor="middle" font-weight="600" letter-spacing="3">ESTÁGIO</text>
 
-      <rect x="610" y="120" width="180" height="50" rx="4" fill="#fff" stroke="#c95f00" stroke-width="1.5"/>
-      <text x="700" y="141" font-family="JetBrains Mono" font-size="9" fill="#c95f00" text-anchor="middle" font-weight="700">pfSense (VM)</text>
-      <text x="700" y="155" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">192.168.1.1 / .2.1 / .3.1</text>
-      <text x="700" y="165" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Firewall · Gateway · DHCP Relay</text>
+      <rect x="610" y="120" width="180" height="50" rx="4" fill="#131826" stroke="#ff9100" stroke-width="1.5"/>
+      <text x="700" y="141" font-family="JetBrains Mono" font-size="9" fill="#ff9100" text-anchor="middle" font-weight="700">pfSense (VM)</text>
+      <text x="700" y="155" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="middle">192.168.1.1 / .2.1 / .3.1</text>
+      <text x="700" y="165" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">Firewall · Gateway · DHCP Relay</text>
 
-      <rect x="590" y="188" width="230" height="200" rx="4" fill="none" stroke="#1a6ef5" stroke-width="1" stroke-dasharray="4,2"/>
-      <text x="705" y="202" font-family="JetBrains Mono" font-size="8" fill="#1a6ef5" text-anchor="middle">CLUSTER PROXMOX</text>
+      <rect x="590" y="188" width="230" height="200" rx="4" fill="none" stroke="#00c4ff" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="705" y="202" font-family="JetBrains Mono" font-size="8" fill="#00c4ff" text-anchor="middle">CLUSTER PROXMOX</text>
 
-      <rect x="597" y="210" width="65" height="50" rx="3" fill="#f4f6fa" stroke="#1a6ef5" stroke-width="1"/>
-      <text x="629" y="228" font-family="JetBrains Mono" font-size="7.5" fill="#1a6ef5" text-anchor="middle" font-weight="700">pve1</text>
-      <text x="629" y="240" font-family="JetBrains Mono" font-size="6.5" fill="#6b7280" text-anchor="middle">.3.50</text>
-      <circle cx="629" cy="252" r="3" fill="#0a8a4e"/>
+      <rect x="597" y="210" width="65" height="50" rx="3" fill="#0f1320" stroke="#00c4ff" stroke-width="1"/>
+      <text x="629" y="228" font-family="JetBrains Mono" font-size="7.5" fill="#00c4ff" text-anchor="middle" font-weight="700">pve1</text>
+      <text x="629" y="240" font-family="JetBrains Mono" font-size="6.5" fill="#64748b" text-anchor="middle">.3.50</text>
+      <circle cx="629" cy="252" r="3" fill="#00e676"/>
 
-      <rect x="672" y="210" width="65" height="50" rx="3" fill="#f4f6fa" stroke="#1a6ef5" stroke-width="1"/>
-      <text x="704" y="228" font-family="JetBrains Mono" font-size="7.5" fill="#1a6ef5" text-anchor="middle" font-weight="700">pve2</text>
-      <text x="704" y="240" font-family="JetBrains Mono" font-size="6.5" fill="#6b7280" text-anchor="middle">.3.51</text>
-      <circle cx="704" cy="252" r="3" fill="#0a8a4e"/>
+      <rect x="672" y="210" width="65" height="50" rx="3" fill="#0f1320" stroke="#00c4ff" stroke-width="1"/>
+      <text x="704" y="228" font-family="JetBrains Mono" font-size="7.5" fill="#00c4ff" text-anchor="middle" font-weight="700">pve2</text>
+      <text x="704" y="240" font-family="JetBrains Mono" font-size="6.5" fill="#64748b" text-anchor="middle">.3.51</text>
+      <circle cx="704" cy="252" r="3" fill="#00e676"/>
 
-      <rect x="747" y="210" width="65" height="50" rx="3" fill="#f4f6fa" stroke="#1a6ef5" stroke-width="1"/>
-      <text x="779" y="228" font-family="JetBrains Mono" font-size="7.5" fill="#1a6ef5" text-anchor="middle" font-weight="700">pve3</text>
-      <text x="779" y="240" font-family="JetBrains Mono" font-size="6.5" fill="#6b7280" text-anchor="middle">.3.52</text>
-      <circle cx="779" cy="252" r="3" fill="#0a8a4e"/>
+      <rect x="747" y="210" width="65" height="50" rx="3" fill="#0f1320" stroke="#00c4ff" stroke-width="1"/>
+      <text x="779" y="228" font-family="JetBrains Mono" font-size="7.5" fill="#00c4ff" text-anchor="middle" font-weight="700">pve3</text>
+      <text x="779" y="240" font-family="JetBrains Mono" font-size="6.5" fill="#64748b" text-anchor="middle">.3.52</text>
+      <circle cx="779" cy="252" r="3" fill="#00e676"/>
 
-      <rect x="605" y="270" width="210" height="24" rx="3" fill="rgba(10,138,78,0.06)" stroke="rgba(10,138,78,0.2)" stroke-width="1"/>
-      <text x="710" y="286" font-family="JetBrains Mono" font-size="7.5" fill="#0a8a4e" text-anchor="middle">Ceph (replicação x3) · CephFS ISO</text>
+      <rect x="605" y="270" width="210" height="24" rx="3" fill="rgba(0,230,118,0.06)" stroke="rgba(0,230,118,0.2)" stroke-width="1"/>
+      <text x="710" y="286" font-family="JetBrains Mono" font-size="7.5" fill="#00e676" text-anchor="middle">Ceph (replicação x3) · CephFS ISO</text>
 
       <rect x="605" y="302" width="210" height="24" rx="3" fill="rgba(124,58,237,0.06)" stroke="rgba(124,58,237,0.2)" stroke-width="1"/>
       <text x="710" y="318" font-family="JetBrains Mono" font-size="7.5" fill="#7c3aed" text-anchor="middle">HA Manager · Failover &lt; 3min</text>
 
-      <text x="605" y="346" font-family="JetBrains Mono" font-size="7" fill="#6b7280">VMs: Windows Server · Nextcloud · pfSense</text>
-      <text x="605" y="358" font-family="JetBrains Mono" font-size="7" fill="#6b7280">      Prometheus+Grafana · UniFi · PBS</text>
+      <text x="605" y="346" font-family="JetBrains Mono" font-size="7" fill="#64748b">VMs: Windows Server · Nextcloud · pfSense</text>
+      <text x="605" y="358" font-family="JetBrains Mono" font-size="7" fill="#64748b">      Prometheus+Grafana · UniFi · PBS</text>
 
-      <path d="M 280 310 C 380 310, 480 310, 560 310" stroke="#1a6ef5" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arr-b)"/>
-      <text x="420" y="304" font-family="JetBrains Mono" font-size="7.5" fill="#1a6ef5" text-anchor="middle">VPN Tailscale</text>
+      <path d="M 280 310 C 380 310, 480 310, 560 310" stroke="#00c4ff" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arr-b)"/>
+      <text x="420" y="304" font-family="JetBrains Mono" font-size="7.5" fill="#00c4ff" text-anchor="middle">VPN Tailscale</text>
 
-      <line x1="700" y1="170" x2="700" y2="188" stroke="#c95f00" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="700" y1="170" x2="700" y2="188" stroke="#ff9100" stroke-width="1.5" marker-end="url(#arr)"/>
 
-      <rect x="590" y="400" width="62" height="38" rx="3" fill="#fff" stroke="#1a6ef5" stroke-width="1"/>
-      <text x="621" y="415" font-family="JetBrains Mono" font-size="7" fill="#1a6ef5" text-anchor="middle" font-weight="600">VLAN 10</text>
-      <text x="621" y="427" font-family="JetBrains Mono" font-size="6.5" fill="#6b7280" text-anchor="middle">VMs</text>
-      <text x="621" y="435" font-family="JetBrains Mono" font-size="6" fill="#9ca3af" text-anchor="middle">.1.x/24</text>
+      <rect x="590" y="400" width="62" height="38" rx="3" fill="#131826" stroke="#00c4ff" stroke-width="1"/>
+      <text x="621" y="415" font-family="JetBrains Mono" font-size="7" fill="#00c4ff" text-anchor="middle" font-weight="600">VLAN 10</text>
+      <text x="621" y="427" font-family="JetBrains Mono" font-size="6.5" fill="#64748b" text-anchor="middle">VMs</text>
+      <text x="621" y="435" font-family="JetBrains Mono" font-size="6" fill="#94a3b8" text-anchor="middle">.1.x/24</text>
 
-      <rect x="663" y="400" width="62" height="38" rx="3" fill="#fff" stroke="#0a8a4e" stroke-width="1"/>
-      <text x="694" y="415" font-family="JetBrains Mono" font-size="7" fill="#0a8a4e" text-anchor="middle" font-weight="600">VLAN 20</text>
-      <text x="694" y="427" font-family="JetBrains Mono" font-size="6.5" fill="#6b7280" text-anchor="middle">Funcionários</text>
-      <text x="694" y="435" font-family="JetBrains Mono" font-size="6" fill="#9ca3af" text-anchor="middle">.2.x/24</text>
+      <rect x="663" y="400" width="62" height="38" rx="3" fill="#131826" stroke="#00e676" stroke-width="1"/>
+      <text x="694" y="415" font-family="JetBrains Mono" font-size="7" fill="#00e676" text-anchor="middle" font-weight="600">VLAN 20</text>
+      <text x="694" y="427" font-family="JetBrains Mono" font-size="6.5" fill="#64748b" text-anchor="middle">Funcionários</text>
+      <text x="694" y="435" font-family="JetBrains Mono" font-size="6" fill="#94a3b8" text-anchor="middle">.2.x/24</text>
 
-      <rect x="736" y="400" width="62" height="38" rx="3" fill="#fff" stroke="#b07500" stroke-width="1"/>
-      <text x="767" y="415" font-family="JetBrains Mono" font-size="7" fill="#b07500" text-anchor="middle" font-weight="600">VLAN 30</text>
-      <text x="767" y="427" font-family="JetBrains Mono" font-size="6.5" fill="#6b7280" text-anchor="middle">Gestão</text>
-      <text x="767" y="435" font-family="JetBrains Mono" font-size="6" fill="#9ca3af" text-anchor="middle">.3.x/24</text>
+      <rect x="736" y="400" width="62" height="38" rx="3" fill="#131826" stroke="#ffd740" stroke-width="1"/>
+      <text x="767" y="415" font-family="JetBrains Mono" font-size="7" fill="#ffd740" text-anchor="middle" font-weight="600">VLAN 30</text>
+      <text x="767" y="427" font-family="JetBrains Mono" font-size="6.5" fill="#64748b" text-anchor="middle">Gestão</text>
+      <text x="767" y="435" font-family="JetBrains Mono" font-size="6" fill="#94a3b8" text-anchor="middle">.3.x/24</text>
 
-      <line x1="621" y1="390" x2="621" y2="400" stroke="#dde1ea" stroke-width="1"/>
-      <line x1="694" y1="390" x2="694" y2="400" stroke="#dde1ea" stroke-width="1"/>
-      <line x1="767" y1="390" x2="767" y2="400" stroke="#dde1ea" stroke-width="1"/>
-      <line x1="621" y1="390" x2="767" y2="390" stroke="#dde1ea" stroke-width="1"/>
+      <line x1="621" y1="390" x2="621" y2="400" stroke="#1e2840" stroke-width="1"/>
+      <line x1="694" y1="390" x2="694" y2="400" stroke="#1e2840" stroke-width="1"/>
+      <line x1="767" y1="390" x2="767" y2="400" stroke="#1e2840" stroke-width="1"/>
+      <line x1="621" y1="390" x2="767" y2="390" stroke="#1e2840" stroke-width="1"/>
     </svg>
     <p style="text-align:center;margin-top:1rem;font-size:.7rem">* Os routers e switches principais da rede física das instituições não são representados</p>
   </div>
@@ -477,74 +477,74 @@
     <svg viewBox="0 0 740 360" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-width:740px;display:block;margin:0 auto">
       <defs>
         <marker id="a2" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
-          <path d="M0,0 L7,3.5 L0,7 z" fill="#dde1ea"/>
+          <path d="M0,0 L7,3.5 L0,7 z" fill="#1e2840"/>
         </marker>
       </defs>
 
       <!-- pfSense center -->
-      <rect x="295" y="20" width="150" height="56" rx="4" fill="#fff" stroke="#c95f00" stroke-width="2"/>
-      <text x="370" y="44" font-family="JetBrains Mono" font-size="10" fill="#c95f00" text-anchor="middle" font-weight="700">pfSense</text>
-      <text x="370" y="58" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">Firewall · Gateway · DHCP Relay</text>
-      <text x="370" y="70" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">WAN: 192.168.102.x</text>
+      <rect x="295" y="20" width="150" height="56" rx="4" fill="#131826" stroke="#ff9100" stroke-width="2"/>
+      <text x="370" y="44" font-family="JetBrains Mono" font-size="10" fill="#ff9100" text-anchor="middle" font-weight="700">pfSense</text>
+      <text x="370" y="58" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="middle">Firewall · Gateway · DHCP Relay</text>
+      <text x="370" y="70" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">WAN: 192.168.102.x</text>
 
       <!-- VLAN 10 -->
-      <rect x="30" y="130" width="200" height="200" rx="4" fill="rgba(26,110,245,0.03)" stroke="#1a6ef5" stroke-width="1.5"/>
-      <text x="130" y="152" font-family="JetBrains Mono" font-size="9" fill="#1a6ef5" text-anchor="middle" font-weight="700" letter-spacing="1">VLAN 10 — VMs</text>
-      <text x="130" y="165" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">192.168.1.0/24 · GW: .1.1</text>
-      <g><rect x="45" y="178" width="170" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
-        <text x="55" y="193" font-family="JetBrains Mono" font-size="8" fill="#111827">Windows Server</text>
-        <text x="175" y="193" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.1.100</text></g>
-      <g><rect x="45" y="204" width="170" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
-        <text x="55" y="219" font-family="JetBrains Mono" font-size="8" fill="#111827">Nextcloud</text>
-        <text x="175" y="219" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.1.60</text></g>
-      <g><rect x="45" y="230" width="170" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
-        <text x="55" y="245" font-family="JetBrains Mono" font-size="8" fill="#111827">Prometheus+Grafana</text>
-        <text x="175" y="245" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.1.61</text></g>
-      <g><rect x="45" y="256" width="170" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
-        <text x="55" y="271" font-family="JetBrains Mono" font-size="8" fill="#111827">pfSense (LAN)</text>
-        <text x="175" y="271" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.1.1</text></g>
+      <rect x="30" y="130" width="200" height="200" rx="4" fill="rgba(0,196,255,0.04)" stroke="#00c4ff" stroke-width="1.5"/>
+      <text x="130" y="152" font-family="JetBrains Mono" font-size="9" fill="#00c4ff" text-anchor="middle" font-weight="700" letter-spacing="1">VLAN 10 — VMs</text>
+      <text x="130" y="165" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="middle">192.168.1.0/24 · GW: .1.1</text>
+      <g><rect x="45" y="178" width="170" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
+        <text x="55" y="193" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">Windows Server</text>
+        <text x="175" y="193" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.1.100</text></g>
+      <g><rect x="45" y="204" width="170" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
+        <text x="55" y="219" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">Nextcloud</text>
+        <text x="175" y="219" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.1.60</text></g>
+      <g><rect x="45" y="230" width="170" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
+        <text x="55" y="245" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">Prometheus+Grafana</text>
+        <text x="175" y="245" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.1.61</text></g>
+      <g><rect x="45" y="256" width="170" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
+        <text x="55" y="271" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">pfSense (LAN)</text>
+        <text x="175" y="271" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.1.1</text></g>
 
       <!-- VLAN 20 -->
-      <rect x="268" y="130" width="204" height="130" rx="4" fill="rgba(10,138,78,0.03)" stroke="#0a8a4e" stroke-width="1.5"/>
-      <text x="370" y="152" font-family="JetBrains Mono" font-size="9" fill="#0a8a4e" text-anchor="middle" font-weight="700" letter-spacing="1">VLAN 20 — Funcionários</text>
-      <text x="370" y="165" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">192.168.2.0/24 · GW: .2.1</text>
-      <g><rect x="278" y="175" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
-        <text x="288" y="190" font-family="JetBrains Mono" font-size="8" fill="#111827">PCs (cabo, DHCP)</text>
-        <text x="452" y="190" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.2.2–.99</text></g>
-      <g><rect x="278" y="201" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
-        <text x="288" y="216" font-family="JetBrains Mono" font-size="8" fill="#111827">AP WiFi UniFi U6 (SSID)</text>
-        <text x="452" y="216" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">VLAN20</text></g>
-      <g><rect x="278" y="227" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
-        <text x="288" y="242" font-family="JetBrains Mono" font-size="8" fill="#111827">Impressoras</text>
-        <text x="452" y="242" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.2.100–.254</text></g>
+      <rect x="268" y="130" width="204" height="130" rx="4" fill="rgba(0,230,118,0.04)" stroke="#00e676" stroke-width="1.5"/>
+      <text x="370" y="152" font-family="JetBrains Mono" font-size="9" fill="#00e676" text-anchor="middle" font-weight="700" letter-spacing="1">VLAN 20 — Funcionários</text>
+      <text x="370" y="165" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="middle">192.168.2.0/24 · GW: .2.1</text>
+      <g><rect x="278" y="175" width="184" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
+        <text x="288" y="190" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">PCs (cabo, DHCP)</text>
+        <text x="452" y="190" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.2.2–.99</text></g>
+      <g><rect x="278" y="201" width="184" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
+        <text x="288" y="216" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">AP WiFi UniFi U6 (SSID)</text>
+        <text x="452" y="216" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">VLAN20</text></g>
+      <g><rect x="278" y="227" width="184" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
+        <text x="288" y="242" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">Impressoras</text>
+        <text x="452" y="242" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.2.100–.254</text></g>
 
       <!-- VLAN 30 -->
-      <rect x="506" y="130" width="204" height="180" rx="4" fill="rgba(176,117,0,0.03)" stroke="#b07500" stroke-width="1.5"/>
-      <text x="608" y="152" font-family="JetBrains Mono" font-size="9" fill="#b07500" text-anchor="middle" font-weight="700" letter-spacing="1">VLAN 30 — Gestão</text>
-      <text x="608" y="165" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">192.168.3.0/24 · GW: .3.1</text>
-      <g><rect x="516" y="175" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
-        <text x="526" y="190" font-family="JetBrains Mono" font-size="8" fill="#111827">pve1 / pve2 / pve3</text>
-        <text x="690" y="190" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.3.50–.52</text></g>
-      <g><rect x="516" y="201" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
-        <text x="526" y="216" font-family="JetBrains Mono" font-size="8" fill="#111827">Switch UniFi US-8</text>
-        <text x="690" y="216" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.3.3</text></g>
-      <g><rect x="516" y="227" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
-        <text x="526" y="242" font-family="JetBrains Mono" font-size="8" fill="#111827">AP UniFi U6</text>
-        <text x="690" y="242" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.3.4</text></g>
-      <g><rect x="516" y="253" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
-        <text x="526" y="268" font-family="JetBrains Mono" font-size="8" fill="#111827">UniFi Controller (VM)</text>
-        <text x="690" y="268" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.3.10</text></g>
-      <g><rect x="516" y="279" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
-        <text x="526" y="294" font-family="JetBrains Mono" font-size="8" fill="#111827">pfSense (Gestão)</text>
-        <text x="690" y="294" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.3.1</text></g>
+      <rect x="506" y="130" width="204" height="180" rx="4" fill="rgba(255,215,64,0.04)" stroke="#ffd740" stroke-width="1.5"/>
+      <text x="608" y="152" font-family="JetBrains Mono" font-size="9" fill="#ffd740" text-anchor="middle" font-weight="700" letter-spacing="1">VLAN 30 — Gestão</text>
+      <text x="608" y="165" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="middle">192.168.3.0/24 · GW: .3.1</text>
+      <g><rect x="516" y="175" width="184" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
+        <text x="526" y="190" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">pve1 / pve2 / pve3</text>
+        <text x="690" y="190" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.3.50–.52</text></g>
+      <g><rect x="516" y="201" width="184" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
+        <text x="526" y="216" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">Switch UniFi US-8</text>
+        <text x="690" y="216" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.3.3</text></g>
+      <g><rect x="516" y="227" width="184" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
+        <text x="526" y="242" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">AP UniFi U6</text>
+        <text x="690" y="242" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.3.4</text></g>
+      <g><rect x="516" y="253" width="184" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
+        <text x="526" y="268" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">UniFi Controller (VM)</text>
+        <text x="690" y="268" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.3.10</text></g>
+      <g><rect x="516" y="279" width="184" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
+        <text x="526" y="294" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">pfSense (Gestão)</text>
+        <text x="690" y="294" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.3.1</text></g>
 
-      <line x1="295" y1="48" x2="130" y2="130" stroke="#1a6ef5" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a2)"/>
-      <line x1="370" y1="76" x2="370" y2="130" stroke="#0a8a4e" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a2)"/>
-      <line x1="445" y1="48" x2="608" y2="130" stroke="#b07500" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a2)"/>
+      <line x1="295" y1="48" x2="130" y2="130" stroke="#00c4ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a2)"/>
+      <line x1="370" y1="76" x2="370" y2="130" stroke="#00e676" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a2)"/>
+      <line x1="445" y1="48" x2="608" y2="130" stroke="#ffd740" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a2)"/>
 
-      <rect x="220" y="305" width="300" height="42" rx="4" fill="rgba(214,43,63,0.04)" stroke="rgba(214,43,63,0.2)" stroke-width="1"/>
-      <text x="370" y="322" font-family="JetBrains Mono" font-size="8" fill="#d62b3f" text-anchor="middle" font-weight="700">🔒 Regras de Firewall (pfSense)</text>
-      <text x="370" y="337" font-family="JetBrains Mono" font-size="7" fill="#6b7280" text-anchor="middle">VLAN20 → SSH bloqueado · Monitorização restrita a VLAN30</text>
+      <rect x="220" y="305" width="300" height="42" rx="4" fill="rgba(255,61,87,0.05)" stroke="rgba(255,61,87,0.25)" stroke-width="1"/>
+      <text x="370" y="322" font-family="JetBrains Mono" font-size="8" fill="#ff3d57" text-anchor="middle" font-weight="700">🔒 Regras de Firewall (pfSense)</text>
+      <text x="370" y="337" font-family="JetBrains Mono" font-size="7" fill="#64748b" text-anchor="middle">VLAN20 → SSH bloqueado · Monitorização restrita a VLAN30</text>
     </svg>
   </div>
 
@@ -613,83 +613,83 @@
     <svg viewBox="0 0 820 250" width="820" style="max-width:100%;min-width:600px" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <marker id="fa" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#1a6ef5"/>
+          <path d="M0,0 L0,6 L8,3 z" fill="#00c4ff"/>
         </marker>
       </defs>
 
       <!-- Step 1: Funcionário -->
       <g>
-        <rect x="20" y="90" width="115" height="68" rx="4" fill="#fff" stroke="#0a8a4e" stroke-width="1.5"/>
-        <text x="77" y="113" font-family="JetBrains Mono" font-size="9" fill="#0a8a4e" text-anchor="middle" font-weight="700">Funcionário</text>
-        <text x="77" y="127" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">Liga por cabo</text>
-        <text x="77" y="139" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Ethernet → Switch</text>
-        <text x="77" y="151" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">VLAN 20</text>
-        <text x="77" y="74" font-family="JetBrains Mono" font-size="8" fill="#6b7280" text-anchor="middle">① LIGAÇÃO</text>
+        <rect x="20" y="90" width="115" height="68" rx="4" fill="#131826" stroke="#00e676" stroke-width="1.5"/>
+        <text x="77" y="113" font-family="JetBrains Mono" font-size="9" fill="#00e676" text-anchor="middle" font-weight="700">Funcionário</text>
+        <text x="77" y="127" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="middle">Liga por cabo</text>
+        <text x="77" y="139" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">Ethernet → Switch</text>
+        <text x="77" y="151" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">VLAN 20</text>
+        <text x="77" y="74" font-family="JetBrains Mono" font-size="8" fill="#64748b" text-anchor="middle">① LIGAÇÃO</text>
         <!-- cabo icon -->
-        <line x1="57" y1="160" x2="97" y2="160" stroke="#0a8a4e" stroke-width="1.5"/>
-        <rect x="50" y="157" width="8" height="6" rx="1" fill="none" stroke="#0a8a4e" stroke-width="1"/>
-        <rect x="97" y="157" width="8" height="6" rx="1" fill="none" stroke="#0a8a4e" stroke-width="1"/>
+        <line x1="57" y1="160" x2="97" y2="160" stroke="#00e676" stroke-width="1.5"/>
+        <rect x="50" y="157" width="8" height="6" rx="1" fill="none" stroke="#00e676" stroke-width="1"/>
+        <rect x="97" y="157" width="8" height="6" rx="1" fill="none" stroke="#00e676" stroke-width="1"/>
       </g>
 
-      <line x1="135" y1="124" x2="175" y2="124" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#fa)"/>
+      <line x1="135" y1="124" x2="175" y2="124" stroke="#00c4ff" stroke-width="1.5" marker-end="url(#fa)"/>
 
       <!-- Step 2: Switch UniFi -->
       <g>
-        <rect x="175" y="90" width="115" height="68" rx="4" fill="#fff" stroke="#b07500" stroke-width="1.5"/>
-        <text x="232" y="113" font-family="JetBrains Mono" font-size="9" fill="#b07500" text-anchor="middle" font-weight="700">Switch UniFi</text>
-        <text x="232" y="127" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">US-8-150W</text>
-        <text x="232" y="141" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">VLAN 20 tag</text>
-        <text x="232" y="153" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">PoE+ port</text>
-        <text x="232" y="74" font-family="JetBrains Mono" font-size="8" fill="#6b7280" text-anchor="middle">② VLAN TAG</text>
+        <rect x="175" y="90" width="115" height="68" rx="4" fill="#131826" stroke="#ffd740" stroke-width="1.5"/>
+        <text x="232" y="113" font-family="JetBrains Mono" font-size="9" fill="#ffd740" text-anchor="middle" font-weight="700">Switch UniFi</text>
+        <text x="232" y="127" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="middle">US-8-150W</text>
+        <text x="232" y="141" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">VLAN 20 tag</text>
+        <text x="232" y="153" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">PoE+ port</text>
+        <text x="232" y="74" font-family="JetBrains Mono" font-size="8" fill="#64748b" text-anchor="middle">② VLAN TAG</text>
       </g>
 
-      <line x1="290" y1="124" x2="330" y2="124" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#fa)"/>
+      <line x1="290" y1="124" x2="330" y2="124" stroke="#00c4ff" stroke-width="1.5" marker-end="url(#fa)"/>
 
       <!-- Step 3: pfSense -->
       <g>
-        <rect x="330" y="90" width="115" height="68" rx="4" fill="#fff" stroke="#c95f00" stroke-width="1.5"/>
-        <text x="387" y="113" font-family="JetBrains Mono" font-size="9" fill="#c95f00" text-anchor="middle" font-weight="700">pfSense</text>
-        <text x="387" y="127" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">DHCP Relay</text>
-        <text x="387" y="141" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">→ Win Server</text>
-        <text x="387" y="153" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">IP: .2.x</text>
-        <text x="387" y="74" font-family="JetBrains Mono" font-size="8" fill="#6b7280" text-anchor="middle">③ IP via DHCP</text>
+        <rect x="330" y="90" width="115" height="68" rx="4" fill="#131826" stroke="#ff9100" stroke-width="1.5"/>
+        <text x="387" y="113" font-family="JetBrains Mono" font-size="9" fill="#ff9100" text-anchor="middle" font-weight="700">pfSense</text>
+        <text x="387" y="127" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="middle">DHCP Relay</text>
+        <text x="387" y="141" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">→ Win Server</text>
+        <text x="387" y="153" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">IP: .2.x</text>
+        <text x="387" y="74" font-family="JetBrains Mono" font-size="8" fill="#64748b" text-anchor="middle">③ IP via DHCP</text>
       </g>
 
-      <line x1="445" y1="124" x2="485" y2="124" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#fa)"/>
+      <line x1="445" y1="124" x2="485" y2="124" stroke="#00c4ff" stroke-width="1.5" marker-end="url(#fa)"/>
 
       <!-- Step 4: Windows Server -->
       <g>
-        <rect x="485" y="90" width="115" height="68" rx="4" fill="#fff" stroke="#1a6ef5" stroke-width="1.5"/>
-        <text x="542" y="110" font-family="JetBrains Mono" font-size="9" fill="#1a6ef5" text-anchor="middle" font-weight="700">Win Server</text>
-        <text x="542" y="124" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">AD · DNS · DHCP</text>
-        <text x="542" y="138" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">empresa.local</text>
-        <text x="542" y="152" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Login domínio</text>
-        <text x="542" y="74" font-family="JetBrains Mono" font-size="8" fill="#6b7280" text-anchor="middle">④ AUTENTICAÇÃO</text>
+        <rect x="485" y="90" width="115" height="68" rx="4" fill="#131826" stroke="#00c4ff" stroke-width="1.5"/>
+        <text x="542" y="110" font-family="JetBrains Mono" font-size="9" fill="#00c4ff" text-anchor="middle" font-weight="700">Win Server</text>
+        <text x="542" y="124" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="middle">AD · DNS · DHCP</text>
+        <text x="542" y="138" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">empresa.local</text>
+        <text x="542" y="152" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">Login domínio</text>
+        <text x="542" y="74" font-family="JetBrains Mono" font-size="8" fill="#64748b" text-anchor="middle">④ AUTENTICAÇÃO</text>
       </g>
 
-      <line x1="600" y1="124" x2="640" y2="124" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#fa)"/>
+      <line x1="600" y1="124" x2="640" y2="124" stroke="#00c4ff" stroke-width="1.5" marker-end="url(#fa)"/>
 
       <!-- Step 5: Nextcloud -->
       <g>
-        <rect x="640" y="90" width="115" height="68" rx="4" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/>
+        <rect x="640" y="90" width="115" height="68" rx="4" fill="#131826" stroke="#7c3aed" stroke-width="1.5"/>
         <text x="697" y="110" font-family="JetBrains Mono" font-size="9" fill="#7c3aed" text-anchor="middle" font-weight="700">Nextcloud</text>
-        <text x="697" y="124" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">SSO via LDAP</text>
-        <text x="697" y="138" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Mesmas credenciais</text>
-        <text x="697" y="152" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">do Windows AD</text>
-        <text x="697" y="74" font-family="JetBrains Mono" font-size="8" fill="#6b7280" text-anchor="middle">⑤ CLOUD PRIVADA</text>
+        <text x="697" y="124" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="middle">SSO via LDAP</text>
+        <text x="697" y="138" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">Mesmas credenciais</text>
+        <text x="697" y="152" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">do Windows AD</text>
+        <text x="697" y="74" font-family="JetBrains Mono" font-size="8" fill="#64748b" text-anchor="middle">⑤ CLOUD PRIVADA</text>
       </g>
 
       <!-- Labels baixo -->
-      <text x="77" y="198" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Computador</text>
-      <text x="77" y="210" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">do funcionário</text>
-      <text x="232" y="198" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Ubiquiti US-8</text>
-      <text x="232" y="210" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Gigabit PoE+</text>
-      <text x="387" y="198" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Firewall +</text>
-      <text x="387" y="210" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Encaminhamento</text>
-      <text x="542" y="198" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">AD Domain</text>
-      <text x="542" y="210" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">empresa.local</text>
-      <text x="697" y="198" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Docker +</text>
-      <text x="697" y="210" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">MariaDB</text>
+      <text x="77" y="198" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">Computador</text>
+      <text x="77" y="210" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">do funcionário</text>
+      <text x="232" y="198" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">Ubiquiti US-8</text>
+      <text x="232" y="210" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">Gigabit PoE+</text>
+      <text x="387" y="198" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">Firewall +</text>
+      <text x="387" y="210" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">Encaminhamento</text>
+      <text x="542" y="198" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">AD Domain</text>
+      <text x="542" y="210" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">empresa.local</text>
+      <text x="697" y="198" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">Docker +</text>
+      <text x="697" y="210" font-family="JetBrains Mono" font-size="7" fill="#94a3b8" text-anchor="middle">MariaDB</text>
     </svg>
   </div>
 
@@ -718,7 +718,7 @@
 <script>
 const services = [
   {
-    id:'proxmox', name:'Proxmox VE', icon:'⬡', color:'#1a6ef5',
+    id:'proxmox', name:'Proxmox VE', icon:'⬡', color:'#00c4ff',
     desc:'Hipervisor bare-metal que aloja todas as VMs. Cluster de 3 nós com gestão centralizada.',
     tags:['KVM','LXC','HA','API'],
     how:'Instalado nos 3 servidores físicos. Os nós comunicam por quorum (mínimo 2/3 ativos).',
@@ -726,7 +726,7 @@ const services = [
     code:`<span class="code-comment"># Status do cluster</span>\n<span class="code-key">pvecm</span> <span class="code-val">status</span>\n<span class="code-comment"># Listar todas as VMs</span>\n<span class="code-key">qm</span> <span class="code-val">list</span>`,
   },
   {
-    id:'ceph', name:'Ceph', icon:'◈', color:'#c95f00',
+    id:'ceph', name:'Ceph', icon:'◈', color:'#ff9100',
     desc:'Armazenamento distribuído por software. 3 OSDs em SSDs dedicados com replicação automática.',
     tags:['OSD','CephFS','RADOS','replicação x3'],
     how:'Um SSD de 256GB por nó dedicado exclusivamente ao Ceph OSD. CephFS partilhado para ISOs.',
@@ -734,7 +734,7 @@ const services = [
     code:`<span class="code-comment"># Estado do Ceph</span>\n<span class="code-key">ceph</span> <span class="code-val">status</span>\n<span class="code-comment"># OSDs ativos</span>\n<span class="code-key">ceph</span> <span class="code-val">osd tree</span>`,
   },
   {
-    id:'ha', name:'HA Manager', icon:'⚡', color:'#0a8a4e',
+    id:'ha', name:'HA Manager', icon:'⚡', color:'#00e676',
     desc:'Failover automático de VMs. Se um nó falhar, as VMs são migradas em menos de 3 minutos.',
     tags:['failover','watchdog','restart'],
     how:'Todas as VMs registadas no HA Manager com max_restart=1, max_relocate=2, fallback=true.',
@@ -742,7 +742,7 @@ const services = [
     code:`<span class="code-comment"># Estado do HA</span>\n<span class="code-key">ha-manager</span> <span class="code-val">status</span>\n<span class="code-comment"># Adicionar VM ao HA</span>\n<span class="code-key">ha-manager</span> <span class="code-val">add vm:100</span>`,
   },
   {
-    id:'pfsense', name:'pfSense', icon:'🔒', color:'#c95f00',
+    id:'pfsense', name:'pfSense', icon:'🔒', color:'#ff9100',
     desc:'Firewall e gateway principal. Gere o tráfego entre as 3 VLANs com regras de segurança.',
     tags:['firewall','VLAN','DHCP Relay','gateway'],
     how:'VM com pfSense. 4 interfaces: WAN + 3 VLANs. DHCP Relay aponta para Windows Server.',
@@ -758,7 +758,7 @@ const services = [
     code:`<span class="code-comment"># Domínio</span>\n<span class="code-key">domain</span> <span class="code-val">empresa.local</span>\n<span class="code-comment"># DNS registos</span>\n<span class="code-key">grafana</span>  <span class="code-val">→ 192.168.1.61</span>\n<span class="code-key">nextcloud</span> <span class="code-val">→ 192.168.1.60</span>`,
   },
   {
-    id:'nextcloud', name:'Nextcloud', icon:'☁', color:'#1a6ef5',
+    id:'nextcloud', name:'Nextcloud', icon:'☁', color:'#00c4ff',
     desc:'Cloud privada com SSO via LDAP ligado ao Active Directory. Login idêntico ao Windows.',
     tags:['Docker','LDAP','MariaDB','SSO'],
     how:'VM Ubuntu com Docker. Containers: nextcloud:latest + mariadb:10.6. LDAP integrado com AD.',
@@ -766,7 +766,7 @@ const services = [
     code:`<span class="code-comment"># docker-compose.yml</span>\n<span class="code-key">nextcloud</span>: <span class="code-val">nextcloud:latest</span>\n<span class="code-key">db</span>: <span class="code-val">mariadb:10.6</span>\n<span class="code-comment"># LDAP host</span>\n<span class="code-key">ldap_host</span>: <span class="code-val">192.168.1.100</span>`,
   },
   {
-    id:'monitoring', name:'Prometheus + Grafana', icon:'📊', color:'#0a8a4e',
+    id:'monitoring', name:'Prometheus + Grafana', icon:'📊', color:'#00e676',
     desc:'Monitorização em tempo real do cluster. Métricas recolhidas via pve-exporter e API do Proxmox.',
     tags:['pve-exporter','API Token','dashboards'],
     how:'VM Ubuntu com Docker. pve-exporter usa API Token do PVE para exportar métricas para Prometheus.',
@@ -774,7 +774,7 @@ const services = [
     code:`<span class="code-comment"># API Token PVE</span>\n<span class="code-key">user</span>: <span class="code-val">monitor@pam</span>\n<span class="code-key">token</span>: <span class="code-val">prometheus</span>\n<span class="code-comment"># Métricas</span>\n<span class="code-key">pve_up</span>{<span class="code-val">id="cluster/Barreto"</span>}`,
   },
   {
-    id:'unifi', name:'UniFi Controller', icon:'📡', color:'#b07500',
+    id:'unifi', name:'UniFi Controller', icon:'📡', color:'#ffd740',
     desc:'Gestão centralizada do switch US-8-150W e AP U6. VLANs e SSID configurados graficamente.',
     tags:['WiFi 6','VLAN','PoE+','US-8'],
     how:'VM gerindo AP U6 e Switch US-8. SSID "funcionarios" na VLAN20. VLANs 10/20/30 no switch.',
@@ -792,17 +792,17 @@ const services = [
 ];
 
 const vlanData = [
-  {name:'pfSense (WAN)', vlan:'WAN', ip:'192.168.102.36', gw:'Router', color:'#c95f00'},
-  {name:'pfSense (LAN)', vlan:'Trunk', ip:'192.168.1.1 / .2.1 / .3.1', gw:'—', color:'#c95f00'},
+  {name:'pfSense (WAN)', vlan:'WAN', ip:'192.168.102.36', gw:'Router', color:'#ff9100'},
+  {name:'pfSense (LAN)', vlan:'Trunk', ip:'192.168.1.1 / .2.1 / .3.1', gw:'—', color:'#ff9100'},
   {name:'Windows Server', vlan:'10', ip:'192.168.1.100', gw:'192.168.1.1', color:'#7c3aed'},
-  {name:'Nextcloud', vlan:'10', ip:'192.168.1.60', gw:'192.168.1.1', color:'#1a6ef5'},
-  {name:'Prometheus+Grafana', vlan:'10', ip:'192.168.1.61', gw:'192.168.1.1', color:'#0a8a4e'},
-  {name:'UniFi Controller', vlan:'30', ip:'192.168.3.10', gw:'192.168.3.1', color:'#b07500'},
-  {name:'Cluster Proxmox (x3)', vlan:'30', ip:'192.168.3.50–.52', gw:'192.168.3.1', color:'#1a6ef5'},
-  {name:'Switch UniFi US-8', vlan:'30', ip:'192.168.3.3', gw:'192.168.3.1', color:'#b07500'},
-  {name:'AP UniFi U6', vlan:'30', ip:'192.168.3.4', gw:'192.168.3.1', color:'#b07500'},
-  {name:'Funcionários/PCs (cabo)', vlan:'20', ip:'192.168.2.2–.99', gw:'192.168.2.1', color:'#0a8a4e'},
-  {name:'Impressoras', vlan:'20', ip:'192.168.2.100–.254', gw:'192.168.2.1', color:'#0a8a4e'},
+  {name:'Nextcloud', vlan:'10', ip:'192.168.1.60', gw:'192.168.1.1', color:'#00c4ff'},
+  {name:'Prometheus+Grafana', vlan:'10', ip:'192.168.1.61', gw:'192.168.1.1', color:'#00e676'},
+  {name:'UniFi Controller', vlan:'30', ip:'192.168.3.10', gw:'192.168.3.1', color:'#ffd740'},
+  {name:'Cluster Proxmox (x3)', vlan:'30', ip:'192.168.3.50–.52', gw:'192.168.3.1', color:'#00c4ff'},
+  {name:'Switch UniFi US-8', vlan:'30', ip:'192.168.3.3', gw:'192.168.3.1', color:'#ffd740'},
+  {name:'AP UniFi U6', vlan:'30', ip:'192.168.3.4', gw:'192.168.3.1', color:'#ffd740'},
+  {name:'Funcionários/PCs (cabo)', vlan:'20', ip:'192.168.2.2–.99', gw:'192.168.2.1', color:'#00e676'},
+  {name:'Impressoras', vlan:'20', ip:'192.168.2.100–.254', gw:'192.168.2.1', color:'#00e676'},
 ];
 
 // Render services
@@ -859,7 +859,7 @@ services.forEach(s => {
 const tbody = document.getElementById('vlan-tbody');
 vlanData.forEach(r => {
   const tr = document.createElement('tr');
-  const vlanColors = {'10':'#1a6ef5','20':'#0a8a4e','30':'#b07500','WAN':'#c95f00','Trunk':'#c95f00'};
+  const vlanColors = {'10':'#00c4ff','20':'#00e676','30':'#ffd740','WAN':'#ff9100','Trunk':'#ff9100'};
   const c = vlanColors[r.vlan] || '#6b7280';
   tr.innerHTML = `
     <td>${r.name}</td>
@@ -896,15 +896,15 @@ function simulateFailover() {
   log.innerHTML = '';
 
   const msgs = [
-    {t:0,    msg:'[00:00] ⚡ Falha detectada no nó pve1 (192.168.3.50)...', color:'#ff6b7a'},
-    {t:500,  msg:'[00:00] 🔍 HA Manager: watchdog timeout em pve1', color:'#f5a623'},
-    {t:1200, msg:'[00:01] 📢 HA Manager: iniciando procedimento de failover', color:'#f5d623'},
-    {t:1800, msg:'[00:01] 🔄 Migrando vm:100 (monitorizacao) → pve2...', color:'#7ec8e3'},
-    {t:2400, msg:'[00:02] 🔄 Migrando vm:104 (pf-sense) → pve3...', color:'#7ec8e3'},
-    {t:3600, msg:'[00:03] ✅ vm:100 online em pve2', color:'#a8d8a8'},
-    {t:4000, msg:'[00:03] ✅ vm:104 online em pve3', color:'#a8d8a8'},
-    {t:5000, msg:'[00:03] 🟢 Ceph: dados íntegros (replicação x2 em pve2+pve3)', color:'#a8d8a8'},
-    {t:5500, msg:'[00:03] ✅ Failover concluído. Serviços restaurados em < 3 min.', color:'#a8d8a8'},
+    {t:0,    msg:'[00:00] ⚡ Falha detectada no nó pve1 (192.168.3.50)...', color:'#ff3d57'},
+    {t:500,  msg:'[00:00] 🔍 HA Manager: watchdog timeout em pve1', color:'#ff9100'},
+    {t:1200, msg:'[00:01] 📢 HA Manager: iniciando procedimento de failover', color:'#ffd740'},
+    {t:1800, msg:'[00:01] 🔄 Migrando vm:100 (monitorizacao) → pve2...', color:'#00c4ff'},
+    {t:2400, msg:'[00:02] 🔄 Migrando vm:104 (pf-sense) → pve3...', color:'#00c4ff'},
+    {t:3600, msg:'[00:03] ✅ vm:100 online em pve2', color:'#00e676'},
+    {t:4000, msg:'[00:03] ✅ vm:104 online em pve3', color:'#00e676'},
+    {t:5000, msg:'[00:03] 🟢 Ceph: dados íntegros (replicação x2 em pve2+pve3)', color:'#00e676'},
+    {t:5500, msg:'[00:03] ✅ Failover concluído. Serviços restaurados em < 3 min.', color:'#00e676'},
   ];
 
   setTimeout(() => {
@@ -939,8 +939,8 @@ function resetFailover() {
   const btn = document.querySelector('.failover-btn');
   const reset = document.getElementById('reset-btn');
   document.getElementById('st1').style.background = 'var(--green)';
-  document.getElementById('st1').style.boxShadow = '0 0 8px rgba(10,138,78,0.4)';
-  document.getElementById('node-pve1').style.borderColor = 'var(--border)';
+  document.getElementById('st1').style.boxShadow = '0 0 8px var(--green)';
+  document.getElementById('node-pve1').style.borderColor = '#1e2840';
   document.getElementById('node-pve1').style.opacity = '1';
   document.getElementById('ceph1').style.width = '85%';
   document.getElementById('cl1').textContent = 'SSD OSD: 85% utilizado';
