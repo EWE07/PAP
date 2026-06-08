@@ -308,7 +308,7 @@
 <body>
 
 <nav>
-  <span class="nav-logo">⬡ PAP // INFRAESTRUTURA HA</span>
+  <span class="nav-logo">⬡ Projeto de Apetidão Profissional // Implementação de uma Infraestrutura Virtualizada com Alta Disponibilidade</span>
   <div class="nav-links">
     <a href="#hero">Início</a>
     <a href="#arquitetura">Arquitetura</a>
@@ -501,22 +501,18 @@
         <text x="55" y="245" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">Prometheus+Grafana</text>
         <text x="175" y="245" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.1.61</text></g>
       <g><rect x="45" y="256" width="170" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
-        <text x="55" y="271" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">pfSense (LAN)</text>
-        <text x="175" y="271" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.1.1</text></g>
 
       <!-- VLAN 20 -->
       <rect x="268" y="130" width="204" height="130" rx="4" fill="rgba(0,230,118,0.04)" stroke="#00e676" stroke-width="1.5"/>
       <text x="370" y="152" font-family="JetBrains Mono" font-size="9" fill="#00e676" text-anchor="middle" font-weight="700" letter-spacing="1">VLAN 20 — Funcionários</text>
       <text x="370" y="165" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="middle">192.168.2.0/24 · GW: .2.1</text>
       <g><rect x="278" y="175" width="184" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
-        <text x="288" y="190" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">PCs (cabo, DHCP)</text>
+        <text x="288" y="190" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">PCs dos funcionários</text>
         <text x="452" y="190" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.2.2–.99</text></g>
       <g><rect x="278" y="201" width="184" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
         <text x="288" y="216" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">AP WiFi UniFi U6 (SSID)</text>
         <text x="452" y="216" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">VLAN20</text></g>
       <g><rect x="278" y="227" width="184" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
-        <text x="288" y="242" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">Impressoras</text>
-        <text x="452" y="242" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.2.100–.254</text></g>
 
       <!-- VLAN 30 -->
       <rect x="506" y="130" width="204" height="180" rx="4" fill="rgba(255,215,64,0.04)" stroke="#ffd740" stroke-width="1.5"/>
@@ -535,7 +531,6 @@
         <text x="526" y="268" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">UniFi Controller (VM)</text>
         <text x="690" y="268" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.3.10</text></g>
       <g><rect x="516" y="279" width="184" height="22" rx="2" fill="#0f1320" stroke="#1e2840" stroke-width="1"/>
-        <text x="526" y="294" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">pfSense (Gestão)</text>
         <text x="690" y="294" font-family="JetBrains Mono" font-size="7.5" fill="#64748b" text-anchor="end">.3.1</text></g>
 
       <line x1="295" y1="48" x2="130" y2="130" stroke="#00c4ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a2)"/>
@@ -702,10 +697,6 @@
     <div class="timeline-item">
       <div class="timeline-title">pfSense como VM dentro do cluster (dependência circular)</div>
       <div class="timeline-body">Se a VM pfSense fosse o único gateway do Proxmox, a sua falha bloquearia o acesso ao hypervisor. Solução: dupla conectividade — rede interna via pfSense para o lab e acesso direto à rede física para administração.</div>
-    </div>
-    <div class="timeline-item">
-      <div class="timeline-title">pve-exporter com montagem de volumes Docker</div>
-      <div class="timeline-body">O pve-exporter falhava ao tentar montar o ficheiro de configuração como volume. Solução: substituição por variáveis de ambiente no Docker Compose.</div>
     </div>
   </div>
 </section>
