@@ -1,433 +1,957 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tutoriais de Instalação em VMs</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Infraestrutura Virtualizada com Alta Disponibilidade</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', sans-serif; background: #f5f5f0; color: #1a1a1a; line-height: 1.6; }
+  :root {
+    --bg: rgb(185, 185, 185);
+    --bg2: #f0f2f6;
+    --panel: #ffffff;
+    --panel2: #f4f6fa;
+    --border: #dde1ea;
+    --accent: #1a6ef5;
+    --accent2: #7c3aed;
+    --green: #0a8a4e;
+    --orange: #c95f00;
+    --red: #d62b3f;
+    --yellow: #b07500;
+    --text: #111827;
+    --muted: #6b7280;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
 
-header { background: #1a1a1a; color: #fff; padding: 48px 40px; text-align: center; }
-header h1 { font-size: 30px; font-weight: 700; letter-spacing: -1px; margin-bottom: 8px; }
-header p  { color: #888; font-size: 14px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
 
-nav { display: flex; justify-content: center; gap: 10px; padding: 28px 20px; flex-wrap: wrap; }
-nav a { text-decoration: none; padding: 8px 20px; border-radius: 99px; font-size: 13px; font-weight: 600; border: 1.5px solid #ddd; background: #fff; color: #444; transition: all 0.15s; }
-nav a:hover { border-color: #1a1a1a; color: #1a1a1a; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    overflow-x: hidden;
+  }
 
-main { max-width: 760px; margin: 0 auto; padding: 0 24px 80px; }
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(248,249,251,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex; align-items: center; gap: 2rem;
+  }
+  .nav-logo {
+    font-weight: 800; font-size: 1rem; color: var(--accent);
+    letter-spacing: -0.03em; white-space: nowrap;
+  }
+  .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 0.7rem; color: var(--muted);
+    text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
 
-.section { margin-bottom: 72px; scroll-margin-top: 24px; }
-.section-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #999; margin-bottom: 6px; }
-.section-title { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 10px; }
-.section-desc { font-size: 14px; color: #555; margin-bottom: 32px; max-width: 600px; }
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  section:first-of-type { padding-top: 7rem; }
 
-.step { margin-bottom: 28px; }
-.step-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
-.step-num { width: 24px; height: 24px; border-radius: 50%; background: #1a1a1a; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.step-desc { font-size: 13px; color: #555; margin-bottom: 10px; margin-left: 34px; line-height: 1.7; }
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 800; line-height: 1.05; letter-spacing: -0.04em;
+  }
+  h2 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 2rem; }
+  h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: .5rem; }
+  p { line-height: 1.7; color: var(--muted); font-family: var(--mono); font-size: 0.85rem; }
 
-.code { background: #1a1a1a; border-radius: 8px; overflow: hidden; margin: 10px 0 10px 34px; }
-.code-bar { background: #252525; padding: 7px 14px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: #555; font-family: 'JetBrains Mono', monospace; }
-.copy-btn { background: transparent; border: 1px solid #3a3a3a; border-radius: 4px; color: #666; font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; cursor: pointer; transition: all 0.15s; }
-.copy-btn:hover { border-color: #888; color: #bbb; }
-.code pre { padding: 14px 16px; font-size: 12px; line-height: 1.9; color: #e0e0e0; overflow-x: auto; white-space: pre; font-family: 'JetBrains Mono', monospace; }
-.code pre .c { color: #4a4a5a; }
-.code pre .g { color: #4ec994; }
-.code pre .r { color: #e06c75; }
-.code pre .b { color: #61afef; }
-.code pre .y { color: #e5c07b; }
-.code pre .p { color: #c678dd; }
+  .tag {
+    font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid rgba(26,110,245,0.25);
+    background: rgba(26,110,245,0.06);
+    padding: .25rem .7rem; border-radius: 2px;
+    display: inline-block; margin-bottom: 1rem;
+  }
 
-.alert { margin: 10px 0 10px 34px; padding: 11px 14px; border-radius: 6px; font-size: 13px; line-height: 1.6; }
-.alert-warn { background: #fffbe6; border-left: 3px solid #f5a623; color: #7a5c00; }
-.alert-info { background: #eef5ff; border-left: 3px solid #4a9eff; color: #1a4a80; }
-.alert-ok   { background: #efffee; border-left: 3px solid #2ea84a; color: #1a5e2a; }
-.alert strong { font-weight: 600; }
+  /* HERO */
+  #hero {
+    min-height: 92vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding-top: 5rem; position: relative; overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute; top: -200px; right: -200px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,110,245,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  #hero::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px; background: var(--border);
+  }
+  .hero-meta {
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--muted); margin-top: 1.5rem; margin-bottom: 3rem;
+    display: flex; gap: 2rem; flex-wrap: wrap;
+  }
+  .hero-meta span { display: flex; align-items: center; gap: .5rem; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:.3; } }
 
-.path-ui { margin: 10px 0 10px 34px; background: #fff; border: 1px solid #e0e0d8; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #444; display: flex; align-items: center; gap: 6px; }
-.path-ui span { color: #1a1a1a; font-weight: 600; }
-.path-ui .sep { color: #bbb; }
+  .hero-grid {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 1px;
+    border: 1px solid var(--border); margin-top: 3rem;
+  }
+  .hero-stat {
+    padding: 1.5rem; border-right: 1px solid var(--border);
+    background: var(--panel);
+  }
+  .hero-stat:last-child { border-right: none; }
+  .stat-num { font-size: 2rem; font-weight: 800; color: var(--accent); letter-spacing: -0.05em; }
+  .stat-label {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-top: .3rem;
+  }
 
-hr { border: none; border-top: 1px solid #e0e0d8; margin: 64px 0; }
-footer { text-align: center; padding: 32px; font-size: 12px; color: #aaa; }
+  /* DIAGRAM */
+  .diagram-container {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px; padding: 2rem;
+    position: relative; overflow: auto;
+  }
+
+  /* SERVICE CARDS */
+  .services-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px; background: var(--border); border: 1px solid var(--border);
+  }
+  .service-card {
+    background: var(--panel); padding: 1.8rem;
+    cursor: pointer; transition: background 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: var(--card-color, var(--accent));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+  }
+  .service-card:hover { background: var(--panel2); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card.active { background: var(--panel2); }
+  .service-card.active::before { transform: scaleX(1); }
+
+  .card-icon {
+    width: 36px; height: 36px;
+    border: 1px solid var(--card-color, var(--accent));
+    border-radius: 4px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; margin-bottom: 1rem;
+  }
+  .card-name { font-size: 0.95rem; font-weight: 700; margin-bottom: .4rem; }
+  .card-desc { font-size: 0.75rem; color: var(--muted); font-family: var(--mono); line-height: 1.6; }
+  .card-tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .8rem; }
+  .card-tag {
+    font-family: var(--mono); font-size: 0.6rem; padding: .15rem .5rem;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 2px; color: var(--muted);
+  }
+
+  /* DETAIL PANEL */
+  #detail-panel {
+    background: var(--panel2); border: 1px solid var(--border);
+    padding: 2rem; margin-top: 1px; display: none;
+  }
+  #detail-panel.open { display: block; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .detail-section h4 {
+    font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: .1em; color: var(--muted); margin-bottom: .8rem;
+    border-bottom: 1px solid var(--border); padding-bottom: .5rem;
+  }
+  .detail-item {
+    display: flex; align-items: flex-start; gap: .7rem;
+    margin-bottom: .6rem; font-size: .8rem; font-family: var(--mono); color: var(--text);
+  }
+  .detail-bullet {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--accent); margin-top: .45rem; flex-shrink: 0;
+  }
+  .code-block {
+    background: #1e2235; border: 1px solid #2e3550;
+    padding: 1rem; font-family: var(--mono); font-size: 0.72rem;
+    color: #a8d8a8; border-radius: 4px; overflow-x: auto;
+    line-height: 1.8; margin-top: .8rem;
+  }
+  .code-comment { color: #6b7a99; }
+  .code-key { color: #7ec8e3; }
+  .code-val { color: #f0c060; }
+
+  /* NETWORK SECTION */
+  .vlan-table {
+    width: 100%; border-collapse: collapse;
+    font-family: var(--mono); font-size: 0.75rem; margin-top: 1rem;
+  }
+  .vlan-table th {
+    text-align: left; padding: .7rem 1rem;
+    background: var(--panel2); border-bottom: 1px solid var(--border);
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: .08em; font-size: 0.65rem;
+  }
+  .vlan-table td { padding: .7rem 1rem; border-bottom: 1px solid var(--border); }
+  .vlan-table tr:last-child td { border-bottom: none; }
+  .vlan-table tr:hover td { background: var(--panel2); }
+  .vlan-badge {
+    display: inline-block; padding: .15rem .5rem;
+    border-radius: 2px; font-size: .65rem; font-weight: 600;
+  }
+
+  .flow-wrapper { overflow-x: auto; padding-bottom: 1rem; }
+
+  /* HA SECTION */
+  .ha-visual { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin: 1.5rem 0; }
+  .node-card {
+    background: var(--panel); border: 1px solid var(--border);
+    padding: 1.2rem; text-align: center; position: relative;
+  }
+  .node-status {
+    width: 8px; height: 8px; border-radius: 50%;
+    margin: 0 auto .8rem; background: var(--green);
+    box-shadow: 0 0 8px rgba(10,138,78,0.4);
+  }
+  .node-name { font-size: .85rem; font-weight: 700; }
+  .node-ip { font-family: var(--mono); font-size: .65rem; color: var(--muted); margin-top: .3rem; }
+  .ceph-bar {
+    height: 4px; background: var(--border);
+    margin-top: .8rem; border-radius: 2px; overflow: hidden;
+  }
+  .ceph-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 1s ease;
+  }
+  .ceph-label { font-family: var(--mono); font-size: .6rem; color: var(--muted); margin-top: .3rem; text-align: left; }
+
+  .failover-demo {
+    background: var(--panel); border: 1px solid var(--border);
+    padding: 1.5rem; margin-top: 1.5rem;
+  }
+  .failover-btn {
+    background: none; border: 1px solid var(--red); color: var(--red);
+    font-family: var(--mono); font-size: 0.75rem;
+    padding: .6rem 1.2rem; cursor: pointer; letter-spacing: .08em;
+    transition: all .2s; margin-top: 1rem; display: block;
+  }
+  .failover-btn:hover { background: rgba(214,43,63,0.07); }
+  .reset-btn {
+    background: none; border: 1px solid var(--green); color: var(--green);
+    font-family: var(--mono); font-size: 0.75rem;
+    padding: .6rem 1.2rem; cursor: pointer; letter-spacing: .08em;
+    transition: all .2s; margin-top: .5rem; display: none;
+  }
+  .reset-btn:hover { background: rgba(10,138,78,0.07); }
+  .failover-log {
+    font-family: var(--mono); font-size: 0.72rem;
+    background: #1e2235; border: 1px solid #2e3550;
+    color: #a8d8a8; padding: 1rem; margin-top: 1rem;
+    height: 130px; overflow-y: auto; display: none; border-radius: 4px;
+  }
+
+  /* TIMELINE */
+  .timeline { border-left: 2px solid var(--border); padding-left: 2rem; margin-top: 1rem; }
+  .timeline-item { position: relative; margin-bottom: 2rem; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -2.45rem; top: .35rem;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 0 3px rgba(26,110,245,0.15);
+  }
+  .timeline-title { font-weight: 700; font-size: .9rem; }
+  .timeline-body { font-family: var(--mono); font-size: .75rem; color: var(--muted); margin-top: .4rem; line-height: 1.7; }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 2rem; text-align: center;
+    font-family: var(--mono); font-size: .7rem; color: var(--muted);
+    max-width: 1100px; margin: 0 auto;
+  }
+
+  @media(max-width:700px) {
+    .hero-grid { grid-template-columns: repeat(2,1fr); }
+    .detail-grid { grid-template-columns: 1fr; }
+    .ha-visual { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+
+  .fade-in { opacity: 0; transform: translateY(16px); animation: fadeIn .5s forwards; }
+  @keyframes fadeIn { to { opacity:1; transform:translateY(0); } }
+  .fade-in:nth-child(1){animation-delay:.05s}
+  .fade-in:nth-child(2){animation-delay:.1s}
+  .fade-in:nth-child(3){animation-delay:.15s}
+  .fade-in:nth-child(4){animation-delay:.2s}
+
+  /* SVG colors adapted for light theme */
+  .svg-border { stroke: #dde1ea; }
+  .svg-text-muted { fill: #6b7280; }
+  .svg-text-main { fill: #111827; }
+  .svg-panel { fill: #ffffff; }
+  .svg-panel2 { fill: #f4f6fa; }
+  .svg-accent { fill: #1a6ef5; }
+  .svg-green { fill: #0a8a4e; }
+  .svg-orange { fill: #c95f00; }
+  .svg-purple { fill: #7c3aed; }
+  .svg-yellow { fill: #b07500; }
+  .svg-red { fill: #d62b3f; }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Tutoriais de Instalação em VMs</h1>
-  <p>Prometheus + Grafana &nbsp;·&nbsp; Integração com Proxmox</p>
-</header>
-
 <nav>
-  <a href="#prometheus">Prometheus + Grafana</a>
-  <a href="#proxmox">Integração Proxmox</a>
+  <span class="nav-logo">⬡ PAP // INFRAESTRUTURA HA</span>
+  <div class="nav-links">
+    <a href="#hero">Início</a>
+    <a href="#arquitetura">Arquitetura</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#rede">Rede</a>
+    <a href="#ha">Alta Disponibilidade</a>
+    <a href="#fluxo">Fluxo</a>
+  </div>
 </nav>
 
-<main>
+<!-- HERO -->
+<section id="hero">
+  <div class="tag">PAP · Escola Adolfo Portela · 2026</div>
+  <h1>Infraestrutura<br>Virtualizada com<br><span style="color:var(--accent)">Alta Disponibilidade</span></h1>
+  <div class="hero-meta">
+    <span><span class="dot"></span> Sistema operacional</span>
+    <span>Ewerton Barreto Lima · Nº11 12H</span>
+    <span>Instalação e Gestão de Redes</span>
+  </div>
+  <p style="max-width:560px">Infraestrutura empresarial virtualizada com cluster Proxmox VE de 3 nós, armazenamento distribuído Ceph, firewall pfSense, Windows Server AD/DNS/DHCP, cloud privada Nextcloud e monitorização Prometheus + Grafana.</p>
 
-  <!-- ═══════════════════════════════════
-       PROMETHEUS + GRAFANA
-  ════════════════════════════════════ -->
-  <section class="section" id="prometheus">
-    <div class="section-label">Monitoramento</div>
-    <h2 class="section-title">Prometheus + Grafana</h2>
-    <p class="section-desc">
-      Instale o serviço de monitoramento completa usando Docker numa VM Ubuntu.
-      O Prometheus coleta métricas e o Grafana exibe os dashboards.
-    </p>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">1</div> Instalar Docker e Docker Compose</div>
-      <p class="step-desc">Instale o Docker e o plugin Compose via apt.</p>
-      <div class="code">
-        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
-        <pre><span class="g">sudo apt install</span> -y docker.io docker-compose-v2</pre>
-      </div>
+  <div class="hero-grid">
+    <div class="hero-stat fade-in">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Nós Proxmox</div>
     </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">2</div> Habilitar Docker e adicionar usuário ao grupo</div>
-      <p class="step-desc">Inicie o Docker automaticamente no boot e permita rodar sem sudo.</p>
-      <div class="code">
-        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
-        <pre><span class="g">sudo systemctl enable</span> --now docker
-<span class="g">sudo usermod</span> -aG docker <span class="r">$USER</span>
-<span class="g">newgrp</span> docker</pre>
-      </div>
+    <div class="hero-stat fade-in">
+      <div class="stat-num">7</div>
+      <div class="stat-label">VMs em HA</div>
     </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">3</div> Criar estrutura de pastas</div>
-      <div class="code">
-        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
-        <pre><span class="g">mkdir</span> -p ~/monitoramento/{prometheus,grafana}
-<span class="g">cd</span> ~/monitoramento</pre>
-      </div>
+    <div class="hero-stat fade-in">
+      <div class="stat-num">3</div>
+      <div class="stat-label">VLANs</div>
     </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">4</div> Criar o prometheus.yml</div>
-      <div class="code">
-        <div class="code-bar"><span>prometheus/prometheus.yml</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
-        <pre><span class="p">global</span>:
-  scrape_interval: <span class="r">15s</span>
-
-<span class="p">scrape_configs</span>:
-  - job_name: <span class="r">'prometheus'</span>
-    static_configs:
-      - targets: [<span class="r">'localhost:9090'</span>]</pre>
-      </div>
+    <div class="hero-stat fade-in">
+      <div class="stat-num">&lt;3m</div>
+      <div class="stat-label">Tempo Failover</div>
     </div>
+  </div>
+</section>
 
-    <div class="step">
-      <div class="step-title"><div class="step-num">5</div> Criar o docker-compose.yml</div>
-      <div class="code">
-        <div class="code-bar"><span>docker-compose.yml</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
-        <pre><span class="p">version</span>: <span class="r">"3.8"</span>
+<!-- ARQUITETURA -->
+<section id="arquitetura">
+  <div class="tag">Diagrama Interativo</div>
+  <h2>Arquitetura do Sistema</h2>
+  <p style="margin-bottom:2rem">O sistema está dividido em dois locais interligados por VPN Tailscale: o local de estágio com o cluster principal e a escola com o Proxmox Backup Server para redundância geográfica.</p>
 
-<span class="p">services</span>:
-  <span class="g">prometheus</span>:
-    image: <span class="r">prom/prometheus:latest</span>
-    container_name: prometheus
-    volumes:
-      - <span class="b">./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro</span>
-    ports:
-      - <span class="r">"9090:9090"</span>
-    restart: unless-stopped
+  <div class="diagram-container">
+    <svg viewBox="0 0 860 520" width="860" style="max-width:100%;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#dde1ea"/>
+        </marker>
+        <marker id="arr-b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#1a6ef5"/>
+        </marker>
+      </defs>
 
-  <span class="g">grafana</span>:
-    image: <span class="r">grafana/grafana:latest</span>
-    container_name: grafana
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=<span class="r">admin</span>
-    volumes:
-      - <span class="b">grafana_data:/var/lib/grafana</span>
-    ports:
-      - <span class="r">"3000:3000"</span>
-    depends_on:
-      - prometheus
-    restart: unless-stopped
+      <!-- INTERNET -->
+      <rect x="340" y="10" width="180" height="44" rx="4" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1.5"/>
+      <text x="430" y="28" font-family="JetBrains Mono" font-size="9" fill="#6b7280" text-anchor="middle" letter-spacing="2">INTERNET</text>
+      <text x="430" y="44" font-family="JetBrains Mono" font-size="8" fill="#1a6ef5" text-anchor="middle">WAN</text>
 
-<span class="p">volumes</span>:
-  grafana_data: {}</pre>
-      </div>
-      <div class="alert alert-warn"><strong>Atenção:</strong> Troque a senha <code>admin</code> por algo mais seguro antes de usar em produção.</div>
+      <line x1="340" y1="32" x2="160" y2="100" stroke="#dde1ea" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="520" y1="32" x2="700" y2="100" stroke="#dde1ea" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+      <!-- ESCOLA -->
+      <rect x="30" y="90" width="260" height="350" rx="4" fill="none" stroke="#dde1ea" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="160" y="110" font-family="Syne" font-size="10" fill="#6b7280" text-anchor="middle" font-weight="600" letter-spacing="3">ESCOLA</text>
+
+      <rect x="70" y="130" width="180" height="60" rx="4" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="160" y="154" font-family="JetBrains Mono" font-size="9" fill="#7c3aed" text-anchor="middle" font-weight="700">Proxmox VE</text>
+      <text x="160" y="168" font-family="JetBrains Mono" font-size="8" fill="#6b7280" text-anchor="middle">10.1.12.222</text>
+      <text x="160" y="182" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Backup Server</text>
+
+      <rect x="80" y="220" width="160" height="50" rx="4" fill="#f9f8ff" stroke="#7c3aed" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="160" y="240" font-family="JetBrains Mono" font-size="8" fill="#7c3aed" text-anchor="middle">PBS VM</text>
+      <text x="160" y="254" font-family="JetBrains Mono" font-size="7" fill="#6b7280" text-anchor="middle">10.1.12.143</text>
+      <text x="160" y="264" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Backup Repository</text>
+      <line x1="160" y1="190" x2="160" y2="220" stroke="#7c3aed" stroke-width="1" stroke-dasharray="3,2"/>
+
+      <rect x="95" y="295" width="130" height="28" rx="4" fill="rgba(26,110,245,0.05)" stroke="rgba(26,110,245,0.2)" stroke-width="1"/>
+      <text x="160" y="306" font-family="JetBrains Mono" font-size="7" fill="#1a6ef5" text-anchor="middle">🔐 Tailscale VPN</text>
+      <text x="160" y="316" font-family="JetBrains Mono" font-size="7" fill="#6b7280" text-anchor="middle">100.x.x.x</text>
+
+      <!-- ESTÁGIO -->
+      <rect x="560" y="90" width="280" height="380" rx="4" fill="none" stroke="#dde1ea" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="700" y="110" font-family="Syne" font-size="10" fill="#6b7280" text-anchor="middle" font-weight="600" letter-spacing="3">ESTÁGIO</text>
+
+      <rect x="610" y="120" width="180" height="50" rx="4" fill="#fff" stroke="#c95f00" stroke-width="1.5"/>
+      <text x="700" y="141" font-family="JetBrains Mono" font-size="9" fill="#c95f00" text-anchor="middle" font-weight="700">pfSense (VM)</text>
+      <text x="700" y="155" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">192.168.1.1 / .2.1 / .3.1</text>
+      <text x="700" y="165" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Firewall · Gateway · DHCP Relay</text>
+
+      <rect x="590" y="188" width="230" height="200" rx="4" fill="none" stroke="#1a6ef5" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="705" y="202" font-family="JetBrains Mono" font-size="8" fill="#1a6ef5" text-anchor="middle">CLUSTER PROXMOX</text>
+
+      <rect x="597" y="210" width="65" height="50" rx="3" fill="#f4f6fa" stroke="#1a6ef5" stroke-width="1"/>
+      <text x="629" y="228" font-family="JetBrains Mono" font-size="7.5" fill="#1a6ef5" text-anchor="middle" font-weight="700">pve1</text>
+      <text x="629" y="240" font-family="JetBrains Mono" font-size="6.5" fill="#6b7280" text-anchor="middle">.3.50</text>
+      <circle cx="629" cy="252" r="3" fill="#0a8a4e"/>
+
+      <rect x="672" y="210" width="65" height="50" rx="3" fill="#f4f6fa" stroke="#1a6ef5" stroke-width="1"/>
+      <text x="704" y="228" font-family="JetBrains Mono" font-size="7.5" fill="#1a6ef5" text-anchor="middle" font-weight="700">pve2</text>
+      <text x="704" y="240" font-family="JetBrains Mono" font-size="6.5" fill="#6b7280" text-anchor="middle">.3.51</text>
+      <circle cx="704" cy="252" r="3" fill="#0a8a4e"/>
+
+      <rect x="747" y="210" width="65" height="50" rx="3" fill="#f4f6fa" stroke="#1a6ef5" stroke-width="1"/>
+      <text x="779" y="228" font-family="JetBrains Mono" font-size="7.5" fill="#1a6ef5" text-anchor="middle" font-weight="700">pve3</text>
+      <text x="779" y="240" font-family="JetBrains Mono" font-size="6.5" fill="#6b7280" text-anchor="middle">.3.52</text>
+      <circle cx="779" cy="252" r="3" fill="#0a8a4e"/>
+
+      <rect x="605" y="270" width="210" height="24" rx="3" fill="rgba(10,138,78,0.06)" stroke="rgba(10,138,78,0.2)" stroke-width="1"/>
+      <text x="710" y="286" font-family="JetBrains Mono" font-size="7.5" fill="#0a8a4e" text-anchor="middle">Ceph (replicação x3) · CephFS ISO</text>
+
+      <rect x="605" y="302" width="210" height="24" rx="3" fill="rgba(124,58,237,0.06)" stroke="rgba(124,58,237,0.2)" stroke-width="1"/>
+      <text x="710" y="318" font-family="JetBrains Mono" font-size="7.5" fill="#7c3aed" text-anchor="middle">HA Manager · Failover &lt; 3min</text>
+
+      <text x="605" y="346" font-family="JetBrains Mono" font-size="7" fill="#6b7280">VMs: Windows Server · Nextcloud · pfSense</text>
+      <text x="605" y="358" font-family="JetBrains Mono" font-size="7" fill="#6b7280">      Prometheus+Grafana · UniFi · PBS</text>
+
+      <path d="M 280 310 C 380 310, 480 310, 560 310" stroke="#1a6ef5" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arr-b)"/>
+      <text x="420" y="304" font-family="JetBrains Mono" font-size="7.5" fill="#1a6ef5" text-anchor="middle">VPN Tailscale</text>
+
+      <line x1="700" y1="170" x2="700" y2="188" stroke="#c95f00" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <rect x="590" y="400" width="62" height="38" rx="3" fill="#fff" stroke="#1a6ef5" stroke-width="1"/>
+      <text x="621" y="415" font-family="JetBrains Mono" font-size="7" fill="#1a6ef5" text-anchor="middle" font-weight="600">VLAN 10</text>
+      <text x="621" y="427" font-family="JetBrains Mono" font-size="6.5" fill="#6b7280" text-anchor="middle">VMs</text>
+      <text x="621" y="435" font-family="JetBrains Mono" font-size="6" fill="#9ca3af" text-anchor="middle">.1.x/24</text>
+
+      <rect x="663" y="400" width="62" height="38" rx="3" fill="#fff" stroke="#0a8a4e" stroke-width="1"/>
+      <text x="694" y="415" font-family="JetBrains Mono" font-size="7" fill="#0a8a4e" text-anchor="middle" font-weight="600">VLAN 20</text>
+      <text x="694" y="427" font-family="JetBrains Mono" font-size="6.5" fill="#6b7280" text-anchor="middle">Funcionários</text>
+      <text x="694" y="435" font-family="JetBrains Mono" font-size="6" fill="#9ca3af" text-anchor="middle">.2.x/24</text>
+
+      <rect x="736" y="400" width="62" height="38" rx="3" fill="#fff" stroke="#b07500" stroke-width="1"/>
+      <text x="767" y="415" font-family="JetBrains Mono" font-size="7" fill="#b07500" text-anchor="middle" font-weight="600">VLAN 30</text>
+      <text x="767" y="427" font-family="JetBrains Mono" font-size="6.5" fill="#6b7280" text-anchor="middle">Gestão</text>
+      <text x="767" y="435" font-family="JetBrains Mono" font-size="6" fill="#9ca3af" text-anchor="middle">.3.x/24</text>
+
+      <line x1="621" y1="390" x2="621" y2="400" stroke="#dde1ea" stroke-width="1"/>
+      <line x1="694" y1="390" x2="694" y2="400" stroke="#dde1ea" stroke-width="1"/>
+      <line x1="767" y1="390" x2="767" y2="400" stroke="#dde1ea" stroke-width="1"/>
+      <line x1="621" y1="390" x2="767" y2="390" stroke="#dde1ea" stroke-width="1"/>
+    </svg>
+    <p style="text-align:center;margin-top:1rem;font-size:.7rem">* Os routers e switches principais da rede física das instituições não são representados</p>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="servicos">
+  <div class="tag">Clique para explorar</div>
+  <h2>Serviços Implementados</h2>
+  <div class="services-grid" id="services-grid"></div>
+  <div id="detail-panel"></div>
+</section>
+
+<!-- REDE -->
+<section id="rede">
+  <div class="tag">Segmentação de Rede</div>
+  <h2>Topologia de VLANs</h2>
+  <p style="margin-bottom:2rem">A rede está segmentada em 3 VLANs distintas, geridas pelo pfSense como gateway e firewall. O DHCP é centralizado no Windows Server com DHCP Relay.</p>
+
+  <div class="diagram-container">
+    <svg viewBox="0 0 740 360" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-width:740px;display:block;margin:0 auto">
+      <defs>
+        <marker id="a2" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+          <path d="M0,0 L7,3.5 L0,7 z" fill="#dde1ea"/>
+        </marker>
+      </defs>
+
+      <!-- pfSense center -->
+      <rect x="295" y="20" width="150" height="56" rx="4" fill="#fff" stroke="#c95f00" stroke-width="2"/>
+      <text x="370" y="44" font-family="JetBrains Mono" font-size="10" fill="#c95f00" text-anchor="middle" font-weight="700">pfSense</text>
+      <text x="370" y="58" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">Firewall · Gateway · DHCP Relay</text>
+      <text x="370" y="70" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">WAN: 192.168.102.x</text>
+
+      <!-- VLAN 10 -->
+      <rect x="30" y="130" width="200" height="200" rx="4" fill="rgba(26,110,245,0.03)" stroke="#1a6ef5" stroke-width="1.5"/>
+      <text x="130" y="152" font-family="JetBrains Mono" font-size="9" fill="#1a6ef5" text-anchor="middle" font-weight="700" letter-spacing="1">VLAN 10 — VMs</text>
+      <text x="130" y="165" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">192.168.1.0/24 · GW: .1.1</text>
+      <g><rect x="45" y="178" width="170" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
+        <text x="55" y="193" font-family="JetBrains Mono" font-size="8" fill="#111827">Windows Server</text>
+        <text x="175" y="193" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.1.100</text></g>
+      <g><rect x="45" y="204" width="170" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
+        <text x="55" y="219" font-family="JetBrains Mono" font-size="8" fill="#111827">Nextcloud</text>
+        <text x="175" y="219" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.1.60</text></g>
+      <g><rect x="45" y="230" width="170" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
+        <text x="55" y="245" font-family="JetBrains Mono" font-size="8" fill="#111827">Prometheus+Grafana</text>
+        <text x="175" y="245" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.1.61</text></g>
+      <g><rect x="45" y="256" width="170" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
+        <text x="55" y="271" font-family="JetBrains Mono" font-size="8" fill="#111827">pfSense (LAN)</text>
+        <text x="175" y="271" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.1.1</text></g>
+
+      <!-- VLAN 20 -->
+      <rect x="268" y="130" width="204" height="130" rx="4" fill="rgba(10,138,78,0.03)" stroke="#0a8a4e" stroke-width="1.5"/>
+      <text x="370" y="152" font-family="JetBrains Mono" font-size="9" fill="#0a8a4e" text-anchor="middle" font-weight="700" letter-spacing="1">VLAN 20 — Funcionários</text>
+      <text x="370" y="165" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">192.168.2.0/24 · GW: .2.1</text>
+      <g><rect x="278" y="175" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
+        <text x="288" y="190" font-family="JetBrains Mono" font-size="8" fill="#111827">PCs (cabo, DHCP)</text>
+        <text x="452" y="190" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.2.2–.99</text></g>
+      <g><rect x="278" y="201" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
+        <text x="288" y="216" font-family="JetBrains Mono" font-size="8" fill="#111827">AP WiFi UniFi U6 (SSID)</text>
+        <text x="452" y="216" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">VLAN20</text></g>
+      <g><rect x="278" y="227" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
+        <text x="288" y="242" font-family="JetBrains Mono" font-size="8" fill="#111827">Impressoras</text>
+        <text x="452" y="242" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.2.100–.254</text></g>
+
+      <!-- VLAN 30 -->
+      <rect x="506" y="130" width="204" height="180" rx="4" fill="rgba(176,117,0,0.03)" stroke="#b07500" stroke-width="1.5"/>
+      <text x="608" y="152" font-family="JetBrains Mono" font-size="9" fill="#b07500" text-anchor="middle" font-weight="700" letter-spacing="1">VLAN 30 — Gestão</text>
+      <text x="608" y="165" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">192.168.3.0/24 · GW: .3.1</text>
+      <g><rect x="516" y="175" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
+        <text x="526" y="190" font-family="JetBrains Mono" font-size="8" fill="#111827">pve1 / pve2 / pve3</text>
+        <text x="690" y="190" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.3.50–.52</text></g>
+      <g><rect x="516" y="201" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
+        <text x="526" y="216" font-family="JetBrains Mono" font-size="8" fill="#111827">Switch UniFi US-8</text>
+        <text x="690" y="216" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.3.3</text></g>
+      <g><rect x="516" y="227" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
+        <text x="526" y="242" font-family="JetBrains Mono" font-size="8" fill="#111827">AP UniFi U6</text>
+        <text x="690" y="242" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.3.4</text></g>
+      <g><rect x="516" y="253" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
+        <text x="526" y="268" font-family="JetBrains Mono" font-size="8" fill="#111827">UniFi Controller (VM)</text>
+        <text x="690" y="268" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.3.10</text></g>
+      <g><rect x="516" y="279" width="184" height="22" rx="2" fill="#f4f6fa" stroke="#dde1ea" stroke-width="1"/>
+        <text x="526" y="294" font-family="JetBrains Mono" font-size="8" fill="#111827">pfSense (Gestão)</text>
+        <text x="690" y="294" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="end">.3.1</text></g>
+
+      <line x1="295" y1="48" x2="130" y2="130" stroke="#1a6ef5" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a2)"/>
+      <line x1="370" y1="76" x2="370" y2="130" stroke="#0a8a4e" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a2)"/>
+      <line x1="445" y1="48" x2="608" y2="130" stroke="#b07500" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a2)"/>
+
+      <rect x="220" y="305" width="300" height="42" rx="4" fill="rgba(214,43,63,0.04)" stroke="rgba(214,43,63,0.2)" stroke-width="1"/>
+      <text x="370" y="322" font-family="JetBrains Mono" font-size="8" fill="#d62b3f" text-anchor="middle" font-weight="700">🔒 Regras de Firewall (pfSense)</text>
+      <text x="370" y="337" font-family="JetBrains Mono" font-size="7" fill="#6b7280" text-anchor="middle">VLAN20 → SSH bloqueado · Monitorização restrita a VLAN30</text>
+    </svg>
+  </div>
+
+  <h3 style="margin-top:2rem;margin-bottom:1rem">Tabela de Endereçamento</h3>
+  <div style="overflow-x:auto">
+  <table class="vlan-table">
+    <thead>
+      <tr>
+        <th>VM / Dispositivo</th><th>VLAN</th><th>IP</th><th>Gateway</th>
+      </tr>
+    </thead>
+    <tbody id="vlan-tbody"></tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ALTA DISPONIBILIDADE -->
+<section id="ha">
+  <div class="tag">Alta Disponibilidade</div>
+  <h2>Cluster & Failover</h2>
+  <p style="margin-bottom:2rem">O cluster Proxmox com HA Manager garante que, se um nó falhar, todas as VMs reiniciam automaticamente noutro nó em menos de 3 minutos. O Ceph replica os dados em 3 discos SSD simultaneamente.</p>
+
+  <div class="ha-visual" id="ha-nodes">
+    <div class="node-card" id="node-pve1">
+      <div class="node-status" id="st1"></div>
+      <div class="node-name">pve1</div>
+      <div class="node-ip">192.168.3.50</div>
+      <div class="ceph-bar"><div class="ceph-fill" style="width:85%" id="ceph1"></div></div>
+      <div class="ceph-label" id="cl1">SSD OSD: 85% utilizado</div>
+      <div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-top:.5rem" id="vms1">VMs: monitorizacao, pf-sense</div>
     </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">6</div> Subir os containers</div>
-      <div class="code">
-        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
-        <pre><span class="g">docker compose up</span> -d</pre>
-      </div>
+    <div class="node-card" id="node-pve2">
+      <div class="node-status" id="st2"></div>
+      <div class="node-name">pve2</div>
+      <div class="node-ip">192.168.3.51</div>
+      <div class="ceph-bar"><div class="ceph-fill" style="width:78%" id="ceph2"></div></div>
+      <div class="ceph-label" id="cl2">SSD OSD: 78% utilizado</div>
+      <div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-top:.5rem" id="vms2">VMs: nextcloud, windows-funcionarios</div>
     </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">7</div> Abrir firewall (se necessário)</div>
-      <p class="step-desc">Se a VM tiver UFW ativo, libere as portas do Grafana e do Prometheus.</p>
-      <div class="code">
-        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
-        <pre><span class="g">sudo ufw allow</span> 3000/tcp
-<span class="g">sudo ufw allow</span> 9090/tcp</pre>
-      </div>
+    <div class="node-card" id="node-pve3">
+      <div class="node-status" id="st3"></div>
+      <div class="node-name">pve3</div>
+      <div class="node-ip">192.168.3.52</div>
+      <div class="ceph-bar"><div class="ceph-fill" style="width:71%" id="ceph3"></div></div>
+      <div class="ceph-label" id="cl3">SSD OSD: 71% utilizado</div>
+      <div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-top:.5rem" id="vms3">VMs: windows-server, unifi-os</div>
     </div>
+  </div>
 
-    <div class="step">
-      <div class="step-title"><div class="step-num">8</div> Configurar datasource no Grafana</div>
-      <p class="step-desc">
-        Acesse <strong>http://&lt;IP_DA_VM&gt;:3000</strong> no navegador (login: <code>admin / admin</code>).
-        <br>Navegue até <strong>Connections → Data sources → Add new data source → Prometheus</strong>.
-        Preencha a URL e salve.
-      </p>
-      <div class="path-ui">
-        <span>Connections</span><span class="sep">→</span><span>Data sources</span><span class="sep">→</span><span>Add new</span><span class="sep">→</span><span>Prometheus</span>
-      </div>
-      <div class="code">
-        <div class="code-bar"><span>campo URL</span></div>
-        <pre>http://<ip-prometheus>:9090</pre>
-      </div>
-      <p class="step-desc" style="margin-top:10px;">Clique em <strong>Save &amp; test</strong>. A mensagem de sucesso deve aparecer:</p>
-      <div class="alert alert-ok"><strong>Consulta à API do Prometheus realizada com sucesso.</strong> Em seguida, você pode começar a visualizar os dados criando um dashboard ou consultando os dados na visualização Explore.</div>
+  <div class="failover-demo">
+    <h3>Simulação de Failover</h3>
+    <p style="margin-top:.5rem">Simule a falha do nó pve1 e observe como o HA Manager migra automaticamente as VMs.</p>
+    <button class="failover-btn" onclick="simulateFailover()">⚡ SIMULAR FALHA DO PVE1</button>
+    <button class="reset-btn" id="reset-btn" onclick="resetFailover()">↺ RESTAURAR CLUSTER</button>
+    <div class="failover-log" id="failover-log"></div>
+  </div>
+</section>
+
+<!-- FLUXO -->
+<section id="fluxo">
+  <div class="tag">Fluxo de Utilizadores</div>
+  <h2>Autenticação & Acesso</h2>
+  <p style="margin-bottom:2rem">Como um funcionário acede aos serviços da empresa — desde a ligação à rede por cabo Ethernet até ao Nextcloud com Single Sign-On via Active Directory.</p>
+
+  <div class="diagram-container flow-wrapper">
+    <svg viewBox="0 0 820 250" width="820" style="max-width:100%;min-width:600px" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="fa" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#1a6ef5"/>
+        </marker>
+      </defs>
+
+      <!-- Step 1: Funcionário -->
+      <g>
+        <rect x="20" y="90" width="115" height="68" rx="4" fill="#fff" stroke="#0a8a4e" stroke-width="1.5"/>
+        <text x="77" y="113" font-family="JetBrains Mono" font-size="9" fill="#0a8a4e" text-anchor="middle" font-weight="700">Funcionário</text>
+        <text x="77" y="127" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">Liga por cabo</text>
+        <text x="77" y="139" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Ethernet → Switch</text>
+        <text x="77" y="151" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">VLAN 20</text>
+        <text x="77" y="74" font-family="JetBrains Mono" font-size="8" fill="#6b7280" text-anchor="middle">① LIGAÇÃO</text>
+        <!-- cabo icon -->
+        <line x1="57" y1="160" x2="97" y2="160" stroke="#0a8a4e" stroke-width="1.5"/>
+        <rect x="50" y="157" width="8" height="6" rx="1" fill="none" stroke="#0a8a4e" stroke-width="1"/>
+        <rect x="97" y="157" width="8" height="6" rx="1" fill="none" stroke="#0a8a4e" stroke-width="1"/>
+      </g>
+
+      <line x1="135" y1="124" x2="175" y2="124" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#fa)"/>
+
+      <!-- Step 2: Switch UniFi -->
+      <g>
+        <rect x="175" y="90" width="115" height="68" rx="4" fill="#fff" stroke="#b07500" stroke-width="1.5"/>
+        <text x="232" y="113" font-family="JetBrains Mono" font-size="9" fill="#b07500" text-anchor="middle" font-weight="700">Switch UniFi</text>
+        <text x="232" y="127" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">US-8-150W</text>
+        <text x="232" y="141" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">VLAN 20 tag</text>
+        <text x="232" y="153" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">PoE+ port</text>
+        <text x="232" y="74" font-family="JetBrains Mono" font-size="8" fill="#6b7280" text-anchor="middle">② VLAN TAG</text>
+      </g>
+
+      <line x1="290" y1="124" x2="330" y2="124" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#fa)"/>
+
+      <!-- Step 3: pfSense -->
+      <g>
+        <rect x="330" y="90" width="115" height="68" rx="4" fill="#fff" stroke="#c95f00" stroke-width="1.5"/>
+        <text x="387" y="113" font-family="JetBrains Mono" font-size="9" fill="#c95f00" text-anchor="middle" font-weight="700">pfSense</text>
+        <text x="387" y="127" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">DHCP Relay</text>
+        <text x="387" y="141" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">→ Win Server</text>
+        <text x="387" y="153" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">IP: .2.x</text>
+        <text x="387" y="74" font-family="JetBrains Mono" font-size="8" fill="#6b7280" text-anchor="middle">③ IP via DHCP</text>
+      </g>
+
+      <line x1="445" y1="124" x2="485" y2="124" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#fa)"/>
+
+      <!-- Step 4: Windows Server -->
+      <g>
+        <rect x="485" y="90" width="115" height="68" rx="4" fill="#fff" stroke="#1a6ef5" stroke-width="1.5"/>
+        <text x="542" y="110" font-family="JetBrains Mono" font-size="9" fill="#1a6ef5" text-anchor="middle" font-weight="700">Win Server</text>
+        <text x="542" y="124" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">AD · DNS · DHCP</text>
+        <text x="542" y="138" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">empresa.local</text>
+        <text x="542" y="152" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Login domínio</text>
+        <text x="542" y="74" font-family="JetBrains Mono" font-size="8" fill="#6b7280" text-anchor="middle">④ AUTENTICAÇÃO</text>
+      </g>
+
+      <line x1="600" y1="124" x2="640" y2="124" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#fa)"/>
+
+      <!-- Step 5: Nextcloud -->
+      <g>
+        <rect x="640" y="90" width="115" height="68" rx="4" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="697" y="110" font-family="JetBrains Mono" font-size="9" fill="#7c3aed" text-anchor="middle" font-weight="700">Nextcloud</text>
+        <text x="697" y="124" font-family="JetBrains Mono" font-size="7.5" fill="#6b7280" text-anchor="middle">SSO via LDAP</text>
+        <text x="697" y="138" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Mesmas credenciais</text>
+        <text x="697" y="152" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">do Windows AD</text>
+        <text x="697" y="74" font-family="JetBrains Mono" font-size="8" fill="#6b7280" text-anchor="middle">⑤ CLOUD PRIVADA</text>
+      </g>
+
+      <!-- Labels baixo -->
+      <text x="77" y="198" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Computador</text>
+      <text x="77" y="210" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">do funcionário</text>
+      <text x="232" y="198" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Ubiquiti US-8</text>
+      <text x="232" y="210" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Gigabit PoE+</text>
+      <text x="387" y="198" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Firewall +</text>
+      <text x="387" y="210" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Encaminhamento</text>
+      <text x="542" y="198" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">AD Domain</text>
+      <text x="542" y="210" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">empresa.local</text>
+      <text x="697" y="198" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">Docker +</text>
+      <text x="697" y="210" font-family="JetBrains Mono" font-size="7" fill="#9ca3af" text-anchor="middle">MariaDB</text>
+    </svg>
+  </div>
+
+  <h3 style="margin-top:3rem;margin-bottom:1.5rem">Dificuldades & Soluções</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-title">Integração LDAP Nextcloud ↔ Active Directory</div>
+      <div class="timeline-body">A configuração correta do Base DN, credenciais de serviço e filtros de utilizadores exigiu testes incrementais. Pequenos erros na sintaxe impediam completamente a autenticação.</div>
     </div>
-  </section>
-
-  <hr>
-
-  <!-- ═══════════════════════════════════
-       INTEGRAÇÃO PROXMOX
-  ════════════════════════════════════ -->
-  <section class="section" id="proxmox">
-    <div class="section-label">Integração</div>
-    <h2 class="section-title">Monitorar o Proxmox com Prometheus</h2>
-    <p class="section-desc">
-      Crie um usuário dedicado no Proxmox com permissão de leitura, gere um API Token,
-      suba o <code>pve-exporter</code> via Docker e adicione os jobs no Prometheus.
-    </p>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">1</div> Criar usuário no Proxmox</div>
-      <p class="step-desc">No painel do Proxmox, navegue até:</p>
-      <div class="path-ui">
-        <span>Datacenter</span><span class="sep">→</span><span>Permissions</span><span class="sep">→</span><span>Users</span><span class="sep">→</span><span>Add</span>
-      </div>
-      <p class="step-desc" style="margin-top:10px;">Preencha o formulário com os seguintes dados:</p>
-      <div class="code">
-        <div class="code-bar"><span>Add: User</span></div>
-        <pre>User name : <span class="g">prometheus</span>
-Realm     : <span class="r">Proxmox VE authentication</span>
-Password  : <span class="c">(deixar em branco — acesso via token)</span>
-Enabled   : <span class="g">✓</span></pre>
-      </div>
+    <div class="timeline-item">
+      <div class="timeline-title">pfSense como VM dentro do cluster (dependência circular)</div>
+      <div class="timeline-body">Se a VM pfSense fosse o único gateway do Proxmox, a sua falha bloquearia o acesso ao hypervisor. Solução: dupla conectividade — rede interna via pfSense para o lab e acesso direto à rede física para administração.</div>
     </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">2</div> Dar permissões mínimas (PVEAuditor)</div>
-      <p class="step-desc">Ainda em Permissions, adicione uma permissão de usuário:</p>
-      <div class="path-ui">
-        <span>Datacenter</span><span class="sep">→</span><span>Permissions</span><span class="sep">→</span><span>Add</span><span class="sep">→</span><span>User Permission</span>
-      </div>
-      <div class="code">
-        <div class="code-bar"><span>Add: User Permission</span></div>
-        <pre>Path      : <span class="g">/</span>
-User      : <span class="r">prometheus@pve</span>
-Role      : <span class="y">PVEAuditor</span>
-Propagate : <span class="g">✓</span></pre>
-      </div>
-      <div class="alert alert-info"><strong>PVEAuditor</strong> é o role com as permissões mínimas necessárias — apenas leitura. Não dê roles com mais permissões do que o necessário.</div>
+    <div class="timeline-item">
+      <div class="timeline-title">pve-exporter com montagem de volumes Docker</div>
+      <div class="timeline-body">O pve-exporter falhava ao tentar montar o ficheiro de configuração como volume. Solução: substituição por variáveis de ambiente no Docker Compose.</div>
     </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">3</div> Criar API Token</div>
-      <div class="path-ui">
-        <span>Datacenter</span><span class="sep">→</span><span>Permissions</span><span class="sep">→</span><span>API Tokens</span><span class="sep">→</span><span>Add</span>
-      </div>
-      <div class="code">
-        <div class="code-bar"><span>Add: Token</span></div>
-        <pre>User                : <span class="r">prometheus@pve</span>
-Token ID            : <span class="g">monitoring</span>
-Privilege Separation: <span class="r">☐ (desmarcado)</span>
-Expire              : never</pre>
-      </div>
-      <p class="step-desc" style="margin-top:10px;">Após criar, o Proxmox exibe o secret <strong>uma única vez</strong>. Guarde-o:</p>
-      <div class="code">
-        <div class="code-bar"><span>Token Secret — copie agora</span></div>
-        <pre>Token ID : <span class="y">prometheus@pve!monitoring</span>
-Secret   : <span class="r">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></pre>
-      </div>
-      <div class="alert alert-warn"><strong>Atenção:</strong> O secret não pode ser recuperado depois. Se perder, será necessário deletar e criar um novo token.</div>
-    </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">4</div> Criar o arquivo pve/pve.yml</div>
-      <p class="step-desc">Crie a pasta e o arquivo de credenciais para o pve-exporter.</p>
-      <div class="code">
-        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
-        <pre><span class="g">mkdir</span> -p ~/monitoramento/pve
-<span class="g">nano</span> ~/monitoramento/pve/pve.yml</pre>
-      </div>
-      <div class="code">
-        <div class="code-bar"><span>pve/pve.yml</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
-        <pre><span class="p">default</span>:
-  user: <span class="r">prometheus@pam</span>
-  token_name: <span class="r">"exporter"</span>
-  token_value: <span class="r">"SEU_TOKEN_SECRET_AQUI"</span>
-  verify_ssl: false</pre>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">5</div> Atualizar o docker-compose.yml</div>
-      <p class="step-desc">Adicione o <code>node_exporter</code> (métricas da VM) e o <code>proxmox_exporter</code> (métricas do Proxmox).</p>
-      <div class="code">
-        <div class="code-bar"><span>docker-compose.yml — versão completa</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
-        <pre><span class="p">version</span>: <span class="r">"3.8"</span>
-
-<span class="p">services</span>:
-  <span class="g">prometheus</span>:
-    image: <span class="r">prom/prometheus:latest</span>
-    container_name: prometheus
-    volumes:
-      - <span class="b">./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro</span>
-    ports:
-      - <span class="r">"9090:9090"</span>
-    restart: unless-stopped
-
-  <span class="g">grafana</span>:
-    image: <span class="r">grafana/grafana:latest</span>
-    container_name: grafana
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=<span class="r">admin</span>
-    volumes:
-      - <span class="b">grafana_data:/var/lib/grafana</span>
-    ports:
-      - <span class="r">"3000:3000"</span>
-    depends_on:
-      - prometheus
-    restart: unless-stopped
-
-  <span class="g">node_exporter</span>:
-    image: <span class="r">quay.io/prometheus/node-exporter:latest</span>
-    container_name: node_exporter
-    network_mode: host
-    pid: host
-    restart: unless-stopped
-
-  <span class="g">proxmox_exporter</span>:
-    image: <span class="r">prompve/prometheus-pve-exporter:latest</span>
-    container_name: proxmox_exporter
-    ports:
-      - <span class="r">"9221:9221"</span>
-    restart: unless-stopped
-    volumes:
-      - <span class="b">./pve/pve.yml:/etc/prometheus/pve.yml</span>
-
-<span class="p">volumes</span>:
-  grafana_data: {}
-  prometheus-data: {}</pre>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">6</div> Atualizar o prometheus.yml com todos os jobs</div>
-      <div class="code">
-        <div class="code-bar"><span>prometheus/prometheus.yml — versão completa</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
-        <pre><span class="p">global</span>:
-  scrape_interval: <span class="r">1m</span>
-
-<span class="p">scrape_configs</span>:
-  <span class="c"># Prometheus em si</span>
-  - job_name: <span class="r">'prometheus'</span>
-    static_configs:
-      - targets: [<span class="r">'localhost:9090'</span>]
-
-  <span class="c"># Métricas da VM (node exporter)</span>
-  - job_name: <span class="r">'node'</span>
-    static_configs:
-      - targets: [<span class="r">'IP_DO_PROXMOX:9100'</span>]  <span class="c"># IP da VM</span>
-
-  <span class="c"># Métricas do Proxmox via pve-exporter</span>
-  - job_name: <span class="r">'pve'</span>
-    static_configs:
-      - targets:
-          - <span class="r">IP_DO_PROXMOX</span>  <span class="c"># IP do nó Proxmox</span>
-    metrics_path: <span class="b">/pve</span>
-    params:
-      module: [default]
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: <span class="r">proxmox_exporter:9221</span></pre>
-      </div>
-      <div class="alert alert-info"><strong>Lembre-se:</strong> Troque <code>IP_DO_PROXMOX</code> pelo IP real do seu Proxmox.</div>
-    </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">7</div> Subir os novos containers e reiniciar o Prometheus</div>
-      <div class="code">
-        <div class="code-bar"><span>terminal</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
-        <pre><span class="g">docker compose up</span> -d
-<span class="g">docker compose restart</span> prometheus</pre>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">8</div> Verificar targets no Prometheus</div>
-      <p class="step-desc">
-        Acesse <strong>http://&lt;IP_DA_VM&gt;:9090/targets</strong> e confirme que todos os jobs
-        estão com status <strong>UP</strong>.
-      </p>
-      <div class="code">
-        <div class="code-bar"><span>Status → Target health — resultado esperado</span></div>
-        <pre>prometheus  →  http://prometheus:9090/metrics   <span class="g">UP</span>
-proxmox     →  http://pve-exporter:9221/metrics  <span class="g">UP</span></pre>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-title"><div class="step-num">9</div> Importar dashboard no Grafana</div>
-      <p class="step-desc">
-        No Grafana, navegue até <strong>Dashboards → New → Import</strong>.
-        Digite o ID <strong>10347</strong> e clique em <strong>Load</strong>.
-      </p>
-      <div class="path-ui">
-        <span>Dashboards</span><span class="sep">→</span><span>New</span><span class="sep">→</span><span>Import</span>
-      </div>
-      <div class="code">
-        <div class="code-bar"><span>Dashboard ID (grafana.com)</span></div>
-        <pre>10347  <span class="c">— "Proxmox via Prometheus" por Pietro Saccardi</span></pre>
-      </div>
-      <p class="step-desc" style="margin-top:10px;">
-        Na tela de importação, selecione o datasource <strong>prometheus</strong> no campo
-        <em>DS_PROMETHEUS</em> e clique em <strong>Import</strong>.
-      </p>
-
-    <img src="grafana.png" style="max-width:100%; height:auto;">
-      <div class="alert alert-ok">
-        <strong>Pronto!</strong> O dashboard exibe em tempo real CPU, memória, disco e o status de todas as VMs rodando no Proxmox.
-      </div>
-    </div>
-  </section>
-
-</main>
+  </div>
+</section>
 
 <footer>
-  Testado em Ubuntu 22.04 LTS · Docker 24+ · Proxmox VE 8
+  <p>Ewerton Barreto Lima · Nº11 12H · Escola Adolfo Portela · Águeda 2026</p>
+  <p style="margin-top:.5rem">Curso Profissional Instalação e Gestão de Redes · PAP</p>
 </footer>
 
 <script>
-function copyCode(btn) {
-  const pre = btn.closest('.code').querySelector('pre');
-  navigator.clipboard.writeText(pre.innerText).then(() => {
-    btn.textContent = '✓ copiado';
-    setTimeout(() => btn.textContent = 'copiar', 2000);
+const services = [
+  {
+    id:'proxmox', name:'Proxmox VE', icon:'⬡', color:'#1a6ef5',
+    desc:'Hipervisor bare-metal que aloja todas as VMs. Cluster de 3 nós com gestão centralizada.',
+    tags:['KVM','LXC','HA','API'],
+    how:'Instalado nos 3 servidores físicos. Os nós comunicam por quorum (mínimo 2/3 ativos).',
+    config:['Cluster: proxmox-cluster (config v8)','Nós: pve1 / pve2 / pve3','Rede gestão: 192.168.3.50-52','Quorum: 2/3 nós necessários'],
+    code:`<span class="code-comment"># Status do cluster</span>\n<span class="code-key">pvecm</span> <span class="code-val">status</span>\n<span class="code-comment"># Listar todas as VMs</span>\n<span class="code-key">qm</span> <span class="code-val">list</span>`,
+  },
+  {
+    id:'ceph', name:'Ceph', icon:'◈', color:'#c95f00',
+    desc:'Armazenamento distribuído por software. 3 OSDs em SSDs dedicados com replicação automática.',
+    tags:['OSD','CephFS','RADOS','replicação x3'],
+    how:'Um SSD de 256GB por nó dedicado exclusivamente ao Ceph OSD. CephFS partilhado para ISOs.',
+    config:['3 OSDs ativos (1 por nó)','73 Placement Groups active+clean','CephFS: ISO store partilhado','Falha tolerada: 1 nó/disco inteiro'],
+    code:`<span class="code-comment"># Estado do Ceph</span>\n<span class="code-key">ceph</span> <span class="code-val">status</span>\n<span class="code-comment"># OSDs ativos</span>\n<span class="code-key">ceph</span> <span class="code-val">osd tree</span>`,
+  },
+  {
+    id:'ha', name:'HA Manager', icon:'⚡', color:'#0a8a4e',
+    desc:'Failover automático de VMs. Se um nó falhar, as VMs são migradas em menos de 3 minutos.',
+    tags:['failover','watchdog','restart'],
+    how:'Todas as VMs registadas no HA Manager com max_restart=1, max_relocate=2, fallback=true.',
+    config:['vm:100 monitorizacao — pve1','vm:101 nextcloud — pve2','vm:102 windows-func — pve2','vm:104 pf-sense — pve1','Failover testado: < 3 min'],
+    code:`<span class="code-comment"># Estado do HA</span>\n<span class="code-key">ha-manager</span> <span class="code-val">status</span>\n<span class="code-comment"># Adicionar VM ao HA</span>\n<span class="code-key">ha-manager</span> <span class="code-val">add vm:100</span>`,
+  },
+  {
+    id:'pfsense', name:'pfSense', icon:'🔒', color:'#c95f00',
+    desc:'Firewall e gateway principal. Gere o tráfego entre as 3 VLANs com regras de segurança.',
+    tags:['firewall','VLAN','DHCP Relay','gateway'],
+    how:'VM com pfSense. 4 interfaces: WAN + 3 VLANs. DHCP Relay aponta para Windows Server.',
+    config:['WAN → 192.168.102.36/24','VLAN10 (VMs) → 192.168.1.1','VLAN20 (Func) → 192.168.2.1','VLAN30 (Gestão) → 192.168.3.1','SSH bloqueado VLAN20→VLAN10','Monitorização bloqueada VLAN20'],
+    code:`<span class="code-comment"># Interfaces pfSense</span>\n<span class="code-key">WAN</span>  <span class="code-val">192.168.102.36/24</span>\n<span class="code-key">VMS</span>  <span class="code-val">192.168.1.1/24</span>\n<span class="code-key">FUNC</span> <span class="code-val">192.168.2.1/24</span>\n<span class="code-key">GEST</span> <span class="code-val">192.168.3.1/24</span>`,
+  },
+  {
+    id:'winserver', name:'Windows Server', icon:'🪟', color:'#7c3aed',
+    desc:'Active Directory, DNS e DHCP centralizados. Domínio empresa.local com gestão de utilizadores.',
+    tags:['AD DS','DNS','DHCP','empresa.local'],
+    how:'VM com IP fixo .1.100. Promovido a Domain Controller. DHCP serve as 3 sub-redes via Relay.',
+    config:['IP fixo: 192.168.1.100/24','Domínio: empresa.local','DHCP_VM: 192.168.1.0/24','DHCP_FUNC: 192.168.2.0/24','DHCP_GEST: 192.168.3.0/24','DNS: grafana/nextcloud.empresa.local'],
+    code:`<span class="code-comment"># Domínio</span>\n<span class="code-key">domain</span> <span class="code-val">empresa.local</span>\n<span class="code-comment"># DNS registos</span>\n<span class="code-key">grafana</span>  <span class="code-val">→ 192.168.1.61</span>\n<span class="code-key">nextcloud</span> <span class="code-val">→ 192.168.1.60</span>`,
+  },
+  {
+    id:'nextcloud', name:'Nextcloud', icon:'☁', color:'#1a6ef5',
+    desc:'Cloud privada com SSO via LDAP ligado ao Active Directory. Login idêntico ao Windows.',
+    tags:['Docker','LDAP','MariaDB','SSO'],
+    how:'VM Ubuntu com Docker. Containers: nextcloud:latest + mariadb:10.6. LDAP integrado com AD.',
+    config:['URL: nextcloud.empresa.local','Base DN: dc=empresa,dc=local','Container: nextcloud:latest','DB: mariadb:10.6 (Docker)','LDAP sync: credenciais AD'],
+    code:`<span class="code-comment"># docker-compose.yml</span>\n<span class="code-key">nextcloud</span>: <span class="code-val">nextcloud:latest</span>\n<span class="code-key">db</span>: <span class="code-val">mariadb:10.6</span>\n<span class="code-comment"># LDAP host</span>\n<span class="code-key">ldap_host</span>: <span class="code-val">192.168.1.100</span>`,
+  },
+  {
+    id:'monitoring', name:'Prometheus + Grafana', icon:'📊', color:'#0a8a4e',
+    desc:'Monitorização em tempo real do cluster. Métricas recolhidas via pve-exporter e API do Proxmox.',
+    tags:['pve-exporter','API Token','dashboards'],
+    how:'VM Ubuntu com Docker. pve-exporter usa API Token do PVE para exportar métricas para Prometheus.',
+    config:['IP: 192.168.1.61','pve-exporter: API Token "prometheus"','Prometheus scrape: 30s interval','Grafana: dashboards Proxmox VE','Acesso restrito VLAN30 (gestão)'],
+    code:`<span class="code-comment"># API Token PVE</span>\n<span class="code-key">user</span>: <span class="code-val">monitor@pam</span>\n<span class="code-key">token</span>: <span class="code-val">prometheus</span>\n<span class="code-comment"># Métricas</span>\n<span class="code-key">pve_up</span>{<span class="code-val">id="cluster/Barreto"</span>}`,
+  },
+  {
+    id:'unifi', name:'UniFi Controller', icon:'📡', color:'#b07500',
+    desc:'Gestão centralizada do switch US-8-150W e AP U6. VLANs e SSID configurados graficamente.',
+    tags:['WiFi 6','VLAN','PoE+','US-8'],
+    how:'VM gerindo AP U6 e Switch US-8. SSID "funcionarios" na VLAN20. VLANs 10/20/30 no switch.',
+    config:['Controller IP: 192.168.3.10','AP U6: 192.168.3.4 (VLAN30)','Switch US-8: 192.168.3.3','SSID: funcionarios → VLAN20','VLANs switch: 10, 20, 30'],
+    code:`<span class="code-comment"># VLANs no switch</span>\n<span class="code-key">VLAN10</span> <span class="code-val">VMs</span>\n<span class="code-key">VLAN20</span> <span class="code-val">FUNCIONARIOS</span>\n<span class="code-key">VLAN30</span> <span class="code-val">GESTAO</span>`,
+  },
+  {
+    id:'pbs', name:'PBS + Tailscale', icon:'💾', color:'#7c3aed',
+    desc:'Backups automáticos diários para servidor na escola via VPN Tailscale. Redundância geográfica.',
+    tags:['backup','VPN mesh','offsite','diário'],
+    how:'PBS instalado no PVE da escola (10.1.12.143). Tailscale nos 4 nós. Backup job diário de todas as VMs.',
+    config:['PBS IP (Tailscale): 10.1.12.143','Tailscale: 100.x.x.x (mesh VPN)','Backups: vm100–vm108','Schedule: diário automático','Redundância geográfica: escola'],
+    code:`<span class="code-comment"># Máquinas no Tailscale</span>\n<span class="code-key">pve</span>  <span class="code-val">100.73.66.45</span>\n<span class="code-key">pve1</span> <span class="code-val">100.88.186.23</span>\n<span class="code-key">pve2</span> <span class="code-val">100.126.19.4</span>\n<span class="code-key">pve3</span> <span class="code-val">100.122.249.113</span>`,
+  },
+];
+
+const vlanData = [
+  {name:'pfSense (WAN)', vlan:'WAN', ip:'192.168.102.36', gw:'Router', color:'#c95f00'},
+  {name:'pfSense (LAN)', vlan:'Trunk', ip:'192.168.1.1 / .2.1 / .3.1', gw:'—', color:'#c95f00'},
+  {name:'Windows Server', vlan:'10', ip:'192.168.1.100', gw:'192.168.1.1', color:'#7c3aed'},
+  {name:'Nextcloud', vlan:'10', ip:'192.168.1.60', gw:'192.168.1.1', color:'#1a6ef5'},
+  {name:'Prometheus+Grafana', vlan:'10', ip:'192.168.1.61', gw:'192.168.1.1', color:'#0a8a4e'},
+  {name:'UniFi Controller', vlan:'30', ip:'192.168.3.10', gw:'192.168.3.1', color:'#b07500'},
+  {name:'Cluster Proxmox (x3)', vlan:'30', ip:'192.168.3.50–.52', gw:'192.168.3.1', color:'#1a6ef5'},
+  {name:'Switch UniFi US-8', vlan:'30', ip:'192.168.3.3', gw:'192.168.3.1', color:'#b07500'},
+  {name:'AP UniFi U6', vlan:'30', ip:'192.168.3.4', gw:'192.168.3.1', color:'#b07500'},
+  {name:'Funcionários/PCs (cabo)', vlan:'20', ip:'192.168.2.2–.99', gw:'192.168.2.1', color:'#0a8a4e'},
+  {name:'Impressoras', vlan:'20', ip:'192.168.2.100–.254', gw:'192.168.2.1', color:'#0a8a4e'},
+];
+
+// Render services
+const grid = document.getElementById('services-grid');
+const panel = document.getElementById('detail-panel');
+let activeId = null;
+
+services.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'service-card';
+  card.style.setProperty('--card-color', s.color);
+  card.innerHTML = `
+    <div class="card-icon" style="border-color:${s.color};color:${s.color}">${s.icon}</div>
+    <div class="card-name">${s.name}</div>
+    <div class="card-desc">${s.desc}</div>
+    <div class="card-tags">${s.tags.map(t=>`<span class="card-tag">${t}</span>`).join('')}</div>
+  `;
+  card.onclick = () => {
+    if (activeId === s.id) {
+      panel.classList.remove('open');
+      card.classList.remove('active');
+      activeId = null;
+      return;
+    }
+    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    activeId = s.id;
+    panel.classList.add('open');
+    panel.style.borderColor = s.color;
+    panel.innerHTML = `
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+        <span style="font-size:1.5rem">${s.icon}</span>
+        <h3 style="font-size:1.2rem;color:${s.color}">${s.name}</h3>
+      </div>
+      <div class="detail-grid">
+        <div class="detail-section">
+          <h4>Como funciona</h4>
+          <p>${s.how}</p>
+          <h4 style="margin-top:1.2rem">Configuração</h4>
+          ${s.config.map(c=>`<div class="detail-item"><div class="detail-bullet" style="background:${s.color}"></div><span>${c}</span></div>`).join('')}
+        </div>
+        <div class="detail-section">
+          <h4>Referência técnica</h4>
+          <div class="code-block">${s.code}</div>
+        </div>
+      </div>
+    `;
+    panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  };
+  grid.appendChild(card);
+});
+
+// Render VLAN table
+const tbody = document.getElementById('vlan-tbody');
+vlanData.forEach(r => {
+  const tr = document.createElement('tr');
+  const vlanColors = {'10':'#1a6ef5','20':'#0a8a4e','30':'#b07500','WAN':'#c95f00','Trunk':'#c95f00'};
+  const c = vlanColors[r.vlan] || '#6b7280';
+  tr.innerHTML = `
+    <td>${r.name}</td>
+    <td><span class="vlan-badge" style="background:rgba(${hexToRgb(c)},0.08);color:${c};border:1px solid ${c}30">VLAN ${r.vlan}</span></td>
+    <td style="font-family:var(--mono)">${r.ip}</td>
+    <td style="font-family:var(--mono);color:var(--muted)">${r.gw}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+// Failover simulation
+let failoverActive = false;
+function simulateFailover() {
+  if (failoverActive) return;
+  failoverActive = true;
+  const log = document.getElementById('failover-log');
+  const btn = document.querySelector('.failover-btn');
+  const reset = document.getElementById('reset-btn');
+  const st1 = document.getElementById('st1');
+  const ceph1 = document.getElementById('ceph1');
+  const cl1 = document.getElementById('cl1');
+  const vms1 = document.getElementById('vms1');
+  const node1 = document.getElementById('node-pve1');
+
+  btn.style.display = 'none';
+  log.style.display = 'block';
+  log.innerHTML = '';
+
+  const msgs = [
+    {t:0,    msg:'[00:00] ⚡ Falha detectada no nó pve1 (192.168.3.50)...', color:'#ff6b7a'},
+    {t:500,  msg:'[00:00] 🔍 HA Manager: watchdog timeout em pve1', color:'#f5a623'},
+    {t:1200, msg:'[00:01] 📢 HA Manager: iniciando procedimento de failover', color:'#f5d623'},
+    {t:1800, msg:'[00:01] 🔄 Migrando vm:100 (monitorizacao) → pve2...', color:'#7ec8e3'},
+    {t:2400, msg:'[00:02] 🔄 Migrando vm:104 (pf-sense) → pve3...', color:'#7ec8e3'},
+    {t:3600, msg:'[00:03] ✅ vm:100 online em pve2', color:'#a8d8a8'},
+    {t:4000, msg:'[00:03] ✅ vm:104 online em pve3', color:'#a8d8a8'},
+    {t:5000, msg:'[00:03] 🟢 Ceph: dados íntegros (replicação x2 em pve2+pve3)', color:'#a8d8a8'},
+    {t:5500, msg:'[00:03] ✅ Failover concluído. Serviços restaurados em < 3 min.', color:'#a8d8a8'},
+  ];
+
+  setTimeout(() => {
+    st1.style.background = '#d62b3f';
+    st1.style.boxShadow = '0 0 8px rgba(214,43,63,0.5)';
+    node1.style.borderColor = '#d62b3f';
+    node1.style.opacity = '.55';
+    ceph1.style.width = '0%';
+    cl1.textContent = 'OSD offline';
+    vms1.textContent = 'VMs: migrando...';
+    vms1.style.color = '#c95f00';
+  }, 400);
+
+  setTimeout(() => {
+    document.getElementById('vms2').textContent = 'VMs: nextcloud, windows-funcionarios, monitorizacao';
+    document.getElementById('vms3').textContent = 'VMs: windows-server, unifi-os, pf-sense';
+  }, 4200);
+
+  msgs.forEach(({t, msg, color}) => {
+    setTimeout(() => {
+      log.innerHTML += `<div style="color:${color}">${msg}</div>`;
+      log.scrollTop = log.scrollHeight;
+    }, t);
   });
+
+  setTimeout(() => { reset.style.display = 'block'; }, 6000);
+}
+
+function resetFailover() {
+  failoverActive = false;
+  const log = document.getElementById('failover-log');
+  const btn = document.querySelector('.failover-btn');
+  const reset = document.getElementById('reset-btn');
+  document.getElementById('st1').style.background = 'var(--green)';
+  document.getElementById('st1').style.boxShadow = '0 0 8px rgba(10,138,78,0.4)';
+  document.getElementById('node-pve1').style.borderColor = 'var(--border)';
+  document.getElementById('node-pve1').style.opacity = '1';
+  document.getElementById('ceph1').style.width = '85%';
+  document.getElementById('cl1').textContent = 'SSD OSD: 85% utilizado';
+  document.getElementById('vms1').textContent = 'VMs: monitorizacao, pf-sense';
+  document.getElementById('vms1').style.color = 'var(--muted)';
+  document.getElementById('vms2').textContent = 'VMs: nextcloud, windows-funcionarios';
+  document.getElementById('vms3').textContent = 'VMs: windows-server, unifi-os';
+  log.style.display = 'none';
+  log.innerHTML = '';
+  btn.style.display = 'block';
+  reset.style.display = 'none';
 }
 </script>
 </body>
