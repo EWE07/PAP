@@ -711,7 +711,7 @@ const services = [
   {
     id:'proxmox', name:'Proxmox VE', icon:'⬡', color:'#00c4ff',
     desc:'Hipervisor bare-metal que aloja todas as VMs. Cluster de 3 nós com gestão centralizada.',
-    tags:['KVM','LXC','HA','API'],
+    tags:['VM','HA','API'],
     how:'Instalado nos 3 servidores físicos. Os nós comunicam por quorum (mínimo 2/3 ativos).',
     config:['Cluster: proxmox-cluster (config v8)','Nós: pve1 / pve2 / pve3','Rede gestão: 192.168.3.50-52','Quorum: 2/3 nós necessários'],
     code:`<span class="code-comment"># Status do cluster</span>\n<span class="code-key">pvecm</span> <span class="code-val">status</span>\n<span class="code-comment"># Listar todas as VMs</span>\n<span class="code-key">qm</span> <span class="code-val">list</span>`,
@@ -719,7 +719,7 @@ const services = [
   {
     id:'ceph', name:'Ceph', icon:'◈', color:'#ff9100',
     desc:'Armazenamento distribuído por software. 3 OSDs em SSDs dedicados com replicação automática.',
-    tags:['OSD','CephFS','RADOS','replicação x3'],
+    tags:['CephOSD','CephFS'],
     how:'Um SSD de 256GB por nó dedicado exclusivamente ao Ceph OSD. CephFS partilhado para ISOs.',
     config:['3 OSDs ativos (1 por nó)','73 Placement Groups active+clean','CephFS: ISO store partilhado','Falha tolerada: 1 nó/disco inteiro'],
     code:`<span class="code-comment"># Estado do Ceph</span>\n<span class="code-key">ceph</span> <span class="code-val">status</span>\n<span class="code-comment"># OSDs ativos</span>\n<span class="code-key">ceph</span> <span class="code-val">osd tree</span>`,
@@ -727,7 +727,7 @@ const services = [
   {
     id:'ha', name:'HA Manager', icon:'⚡', color:'#00e676',
     desc:'Failover automático de VMs. Se um nó falhar, as VMs são migradas em menos de 3 minutos.',
-    tags:['failover','watchdog','restart'],
+    tags:['failover','restart'],
     how:'Todas as VMs registadas no HA Manager com max_restart=1, max_relocate=2, fallback=true.',
     config:['vm:100 monitorizacao — pve1','vm:101 nextcloud — pve2','vm:102 windows-func — pve2','vm:104 pf-sense — pve1','Failover testado: < 3 min'],
     code:`<span class="code-comment"># Estado do HA</span>\n<span class="code-key">ha-manager</span> <span class="code-val">status</span>\n<span class="code-comment"># Adicionar VM ao HA</span>\n<span class="code-key">ha-manager</span> <span class="code-val">add vm:100</span>`,
@@ -751,7 +751,7 @@ const services = [
   {
     id:'nextcloud', name:'Nextcloud', icon:'☁', color:'#00c4ff',
     desc:'Cloud privada com SSO via LDAP ligado ao Active Directory. Login idêntico ao Windows.',
-    tags:['Docker','LDAP','MariaDB','SSO'],
+    tags:['Docker','LDAP','MariaDB'],
     how:'VM Ubuntu com Docker. Containers: nextcloud:latest + mariadb:10.6. LDAP integrado com AD.',
     config:['URL: nextcloud.empresa.local','Base DN: dc=empresa,dc=local','Container: nextcloud:latest','DB: mariadb:10.6 (Docker)','LDAP sync: credenciais AD'],
     code:`<span class="code-comment"># docker-compose.yml</span>\n<span class="code-key">nextcloud</span>: <span class="code-val">nextcloud:latest</span>\n<span class="code-key">db</span>: <span class="code-val">mariadb:10.6</span>\n<span class="code-comment"># LDAP host</span>\n<span class="code-key">ldap_host</span>: <span class="code-val">192.168.1.100</span>`,
